@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <style name="Theme.FitTrack" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+                <item name="colorPrimary">@color/purple_primary</item>
+                <item name="colorPrimaryVariant">@color/purple_dark</item>
+                <item name="colorOnPrimary">@color/text_white</item>
+
+                <item name="colorSecondary">@color/purple_primary</item>
+                <item name="colorSecondaryVariant">@color/purple_dark</item>
+                <item name="colorOnSecondary">@color/text_white</item>
+
+                <item name="android:statusBarColor">@color/bg_dark</item>
+
+                <item name="android:windowSplashScreenBackground">@color/purple_primary</item>
+                <item name="android:windowBackground">@drawable/bg_degrade_roxo</item>
+        </style>
+</resources>

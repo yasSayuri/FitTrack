@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="32dp"
+    android:background="@drawable/bg_degrade_roxo"> <ImageView
+    android:id="@+id/btnVoltarLogin"
+    android:layout_width="32dp"
+    android:layout_height="32dp"
+    android:src="@drawable/ic_arrow_back"
+    app:tint="@color/text_white"
+    android:layout_marginBottom="16dp"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    android:clickable="true"
+    android:focusable="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_white"
+        android:layout_marginBottom="32dp" />
+
+    <EditText
+        android:id="@+id/edtEmailLogin"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:hint="Digite seu e-mail"
+        android:textColorHint="@color/text_hint"
+        android:textColor="@color/text_white"
+        android:backgroundTint="@color/purple_primary"
+        android:layout_marginBottom="16dp"
+        android:inputType="textEmailAddress"/>
+
+    <EditText
+        android:id="@+id/edtPasswordLogin"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:hint="Senha"
+        android:textColorHint="@color/text_hint"
+        android:textColor="@color/text_white"
+        android:backgroundTint="@color/purple_primary"
+        android:layout_marginBottom="32dp"
+        android:inputType="textPassword"/>
+
+    <Button
+        android:id="@+id/btnDoLogin"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Logar"
+        android:backgroundTint="@color/selector_btn_roxo"
+        android:textColor="@color/text_white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Não tem uma conta? "
+            android:textColor="@color/text_hint"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/txtIrParaCadastro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cadastre-se"
+            android:textColor="@color/purple_primary"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
+
+</LinearLayout>
