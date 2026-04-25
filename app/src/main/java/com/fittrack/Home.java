@@ -18,8 +18,8 @@ public class Home extends AppCompatActivity {
 
     private LinearLayout headerHome;
     private View divisoriaHome;
+    private LinearLayout dashboardContainer;
     private ImageView navHistorico, navTreinos, navHome, navPerfil, navConfig;
-    private View bolaRoxa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,75 +30,74 @@ public class Home extends AppCompatActivity {
 
         headerHome = findViewById(R.id.headerHome);
         divisoriaHome = findViewById(R.id.divisoriaHome);
+        dashboardContainer = findViewById(R.id.dashboardContainer);
         navHistorico = findViewById(R.id.nav_historico);
         navTreinos = findViewById(R.id.nav_treinos);
         navHome = findViewById(R.id.nav_home);
         navPerfil = findViewById(R.id.nav_perfil);
         navConfig = findViewById(R.id.nav_config);
-        bolaRoxa = findViewById(R.id.bolaRoxa);
 
-        navHome.post(() -> moverBolaRoxa(navHome));
+        Button btnNovoTreino = findViewById(R.id.btnNovoTreino);
+
+        navHome.post(() -> atualizarIcones(navHome));
+
+        btnNovoTreino.setOnClickListener(v -> {
+            Toast.makeText(this, "Ainda não implementado", Toast.LENGTH_SHORT).show();
+        });
 
         navHistorico.setOnClickListener(v -> {
-            moverBolaRoxa(navHistorico);
+            atualizarIcones(navHistorico);
             trocarFragmento(new Historico(), false);
         });
 
         navTreinos.setOnClickListener(v -> {
-            moverBolaRoxa(navTreinos);
+            atualizarIcones(navTreinos);
             trocarFragmento(new Treinos(), false);
         });
 
         navHome.setOnClickListener(v -> {
-            moverBolaRoxa(navHome);
+            atualizarIcones(navHome);
             headerHome.setVisibility(View.VISIBLE);
             divisoriaHome.setVisibility(View.VISIBLE);
+            dashboardContainer.setVisibility(View.VISIBLE);
+
             for (Fragment fragment : getSupportFragmentManager().getFragments()) {
                 getSupportFragmentManager().beginTransaction().remove(fragment).commit();
             }
         });
 
         navPerfil.setOnClickListener(v -> {
-            moverBolaRoxa(navPerfil);
+            atualizarIcones(navPerfil);
             trocarFragmento(new Perfil(), false);
         });
 
         navConfig.setOnClickListener(v -> {
-            moverBolaRoxa(navConfig);
+            atualizarIcones(navConfig);
             trocarFragmento(new Configuracoes(), false);
         });
     }
 
-    private void moverBolaRoxa(ImageView iconeSelecionado) {
-        float targetX = iconeSelecionado.getX() + (iconeSelecionado.getWidth() / 2f) - (bolaRoxa.getWidth() / 2f);
-        float targetY = iconeSelecionado.getY() + (iconeSelecionado.getHeight() / 2f) - (bolaRoxa.getHeight() / 2f);
-
-        bolaRoxa.animate()
-                .x(targetX)
-                .y(targetY)
-                .setDuration(300)
-                .start();
-
-        navHome.animate()
-                .translationY(-15)
-                .setDuration(300)
-                .start();
-
+    private void atualizarIcones(ImageView selecionado) {
         ImageView[] icones = {navHistorico, navTreinos, navHome, navPerfil, navConfig};
+        int corInativo = ContextCompat.getColor(this, R.color.text_hint);
+        int corAtivo = ContextCompat.getColor(this, R.color.purple_primary);
+
         for (ImageView img : icones) {
-            img.setColorFilter(ContextCompat.getColor(this, R.color.text_hint));
+            img.setColorFilter(corInativo);
         }
 
-        iconeSelecionado.setColorFilter(ContextCompat.getColor(this, R.color.text_white));
+        selecionado.setColorFilter(corAtivo);
     }
 
     private void trocarFragmento(Fragment fragmento, boolean mostrarHeader) {
         if (mostrarHeader) {
             headerHome.setVisibility(View.VISIBLE);
             divisoriaHome.setVisibility(View.VISIBLE);
+            dashboardContainer.setVisibility(View.VISIBLE);
         } else {
             headerHome.setVisibility(View.GONE);
             divisoriaHome.setVisibility(View.GONE);
+            dashboardContainer.setVisibility(View.GONE);
         }
 
         getSupportFragmentManager()
