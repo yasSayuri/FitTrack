@@ -27,7 +27,9 @@ public class Login extends AppCompatActivity {
         });
 
         btnDoLogin.setOnClickListener(v -> {
-            Toast.makeText(this, "Login clicado!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(Login.this, Home.class);
+            startActivity(intent);
+            //finish();
         });
 
         txtIrParaCadastro.setOnClickListener(v -> {

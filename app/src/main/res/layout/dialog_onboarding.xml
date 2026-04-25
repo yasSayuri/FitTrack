@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_dialog_premium"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:id="@+id/layoutInicial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Você é novo aqui!"
+            android:textColor="@color/text_white"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vamos personalizar e cadastrar o seu treino para melhores resultados?"
+            android:textColor="@color/text_hint"
+            android:textAlignment="center"
+            android:layout_marginBottom="24dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnDeixaPraDepois"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="Depois"
+                android:backgroundTint="@color/bg_dark"
+                android:textColor="@color/text_hint"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/btnVamos"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="Vamos!"
+                android:backgroundTint="@color/purple_primary"
+                android:textColor="@color/text_white"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutFormulario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seu Perfil"
+            android:textColor="@color/purple_primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/edtGenero"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Gênero"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_white"
+            android:backgroundTint="@color/purple_dark"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/edtIdade"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Idade (Ex: 23)"
+            android:inputType="number"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_white"
+            android:backgroundTint="@color/purple_dark"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/edtPeso"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Peso (kg)"
+            android:inputType="numberDecimal"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_white"
+            android:backgroundTint="@color/purple_dark"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/edtFrequencia"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Dias de treino por semana"
+            android:inputType="number"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_white"
+            android:backgroundTint="@color/purple_dark"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/edtObjetivo"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Objetivo Atual (Ex: Hipertrofia)"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_white"
+            android:backgroundTint="@color/purple_dark"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/edtTipoTreino"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Tipo de Treino (Ex: Musculação)"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_white"
+            android:backgroundTint="@color/purple_dark"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/btnSalvarTreino"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Salvar e Começar"
+            android:backgroundTint="@color/purple_primary"
+            android:textColor="@color/text_white"/>
+    </LinearLayout>
+
+</LinearLayout>

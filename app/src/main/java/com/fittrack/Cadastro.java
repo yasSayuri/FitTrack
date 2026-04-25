@@ -27,7 +27,9 @@ public class Cadastro extends AppCompatActivity {
         });
 
         btnDoSignup.setOnClickListener(v -> {
-            Toast.makeText(this, "Cadastro finalizado!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(Cadastro.this, Home.class);
+            startActivity(intent);
+            finish();
         });
 
         txtIrParaLogin.setOnClickListener(v -> {
