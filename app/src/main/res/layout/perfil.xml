@@ -102,6 +102,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/txtBio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text='"Idade: 22 Peso: 53kg Altura: 1,60"'

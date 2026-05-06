@@ -11,6 +11,7 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,8 +45,7 @@ public class Home extends AppCompatActivity {
         navConfig = findViewById(R.id.nav_config);
         txtBoasVindas = findViewById(R.id.txtBoasVindas);
 
-        verificarPrimeiroAcesso();
-        buscarNomeUsuario();
+        carregarDadosEVerificarAcesso();
 
         Button btnNovoTreino = findViewById(R.id.btnNovoTreino);
         navHome.post(() -> atualizarIcones(navHome));
@@ -86,36 +86,37 @@ public class Home extends AppCompatActivity {
         });
     }
 
-    private void verificarPrimeiroAcesso() {
-        SharedPreferences pref = getSharedPreferences("FitTrackPrefs", MODE_PRIVATE);
-        boolean primeiroAcesso = pref.getBoolean("primeiro_acesso", true);
-
-        if (primeiroAcesso) {
-            mostrarPopUpOnboarding();
-            pref.edit().putBoolean("primeiro_acesso", false).apply();
-        }
-    }
-
-    private void buscarNomeUsuario() {
+    private void carregarDadosEVerificarAcesso() {
         new Thread(() -> {
             AppDatabase db = AppDatabase.getInstance(this);
             User user = db.userDao().getLastUser();
 
-            if (user != null && user.nome != null) {
-                String primeiroNome = user.nome.split(" ")[0];
-                String textoCompleto = "Olá, " + primeiroNome;
+            if (user != null) {
+                if (user.nome != null) {
+                    String primeiroNome = user.nome.split(" ")[0];
+                    String textoCompleto = "Olá, " + primeiroNome;
 
-                SpannableString spannable = new SpannableString(textoCompleto);
-                int corRoxa = ContextCompat.getColor(this, R.color.purple_primary);
+                    SpannableString spannable = new SpannableString(textoCompleto);
+                    int corRoxa = ContextCompat.getColor(this, R.color.purple_primary);
 
-                spannable.setSpan(
-                        new ForegroundColorSpan(corRoxa),
-                        5,
-                        textoCompleto.length(),
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                );
+                    spannable.setSpan(
+                            new ForegroundColorSpan(corRoxa),
+                            5,
+                            textoCompleto.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    );
 
-                runOnUiThread(() -> txtBoasVindas.setText(spannable));
+                    runOnUiThread(() -> txtBoasVindas.setText(spannable));
+                }
+
+                SharedPreferences pref = getSharedPreferences("FitTrackPrefs", MODE_PRIVATE);
+                String chaveAcessoUser = "primeiro_acesso_" + user.id;
+                boolean primeiroAcesso = pref.getBoolean(chaveAcessoUser, true);
+
+                if (primeiroAcesso) {
+                    pref.edit().putBoolean(chaveAcessoUser, false).apply();
+                    runOnUiThread(this::mostrarPopUpOnboarding);
+                }
             }
         }).start();
     }
@@ -161,14 +162,38 @@ public class Home extends AppCompatActivity {
         Button btnVamos = dialog.findViewById(R.id.btnVamos);
         Button btnSalvarTreino = dialog.findViewById(R.id.btnSalvarTreino);
 
+        EditText edtIdade = dialog.findViewById(R.id.edtIdade);
+        EditText edtPeso = dialog.findViewById(R.id.edtPeso);
+        EditText edtAltura = dialog.findViewById(R.id.edtAltura);
+
         btnDeixaPraDepois.setOnClickListener(v -> dialog.dismiss());
+
         btnVamos.setOnClickListener(v -> {
             layoutInicial.setVisibility(View.GONE);
             layoutFormulario.setVisibility(View.VISIBLE);
         });
+
         btnSalvarTreino.setOnClickListener(v -> {
-            Toast.makeText(this, "Treino cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
+            String idade = (edtIdade != null && edtIdade.getText() != null) ? edtIdade.getText().toString() : "";
+            String peso = (edtPeso != null && edtPeso.getText() != null) ? edtPeso.getText().toString() : "";
+            String altura = (edtAltura != null && edtAltura.getText() != null) ? edtAltura.getText().toString() : "";
+
+            new Thread(() -> {
+                AppDatabase db = AppDatabase.getInstance(Home.this);
+                User user = db.userDao().getLastUser();
+
+                if (user != null) {
+                    user.idade = idade;
+                    user.peso = peso;
+                    user.altura = altura;
+                    db.userDao().update(user);
+                }
+
+                runOnUiThread(() -> {
+                    Toast.makeText(Home.this, "Treino cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                });
+            }).start();
         });
 
         dialog.show();

@@ -107,6 +107,17 @@
             android:layout_marginBottom="8dp"/>
 
         <EditText
+            android:id="@+id/edtAltura"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Altura (Ex: 1.60)"
+            android:inputType="numberDecimal"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_white"
+            android:backgroundTint="@color/purple_dark"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
             android:id="@+id/edtFrequencia"
             android:layout_width="match_parent"
             android:layout_height="50dp"
