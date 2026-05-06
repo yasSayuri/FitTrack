@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.fittrack.conexao.AppDatabase;
 import com.fittrack.entidades.User;
 
@@ -111,7 +110,6 @@ public class Cadastro extends AppCompatActivity {
         new Thread(() -> {
             AppDatabase db = AppDatabase.getInstance(this);
             User novoUsuario = new User(nome, usuario, email, cpf, data, senha);
-            novoUsuario.usuario = usuario;
 
             db.userDao().register(novoUsuario);
 

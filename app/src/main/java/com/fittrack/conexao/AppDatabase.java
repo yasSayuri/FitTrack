@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 import com.fittrack.entidades.User;
 import com.fittrack.dao.UserDao;
 
-@Database(entities = {User.class}, version = 2, exportSchema = false)
+@Database(entities = {User.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;

@@ -16,6 +16,16 @@ public class User {
     public String cpf;
     public String dataNascimento;
     public String senha;
+    public String fotoPerfil;
+
+    @ColumnInfo(name = "idade")
+    public String idade;
+
+    @ColumnInfo(name = "peso")
+    public String peso;
+
+    @ColumnInfo(name = "altura")
+    public String altura;
 
     public User() {}
 
@@ -28,13 +38,4 @@ public class User {
         this.dataNascimento = dataNascimento;
         this.senha = senha;
     }
-
-    @ColumnInfo(name = "idade")
-    public String idade;
-
-    @ColumnInfo(name = "peso")
-    public String peso;
-
-    @ColumnInfo(name = "altura")
-    public String altura;
 }
