@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_dialog_premium"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Termos de Uso"
+        android:textColor="@color/purple_primary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="center"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bem-vindo ao FitTrack!\n\nEste aplicativo foi desenvolvido inteiramente como um projeto acadêmico e não possui fins lucrativos ou comerciais.\n\nTodos os dados inseridos aqui são armazenados localmente no seu dispositivo, e nós não nos responsabilizamos por perdas de informações ou mau uso da plataforma.\n\nAproveite os recursos de treinamento e acompanhamento. Mantenha o foco, beba água e bons treinos!"
+            android:textColor="@color/text_white"
+            android:textSize="14sp"
+            android:lineSpacingExtra="4dp"/>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnEntendidoTermos"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Entendido!"
+        android:backgroundTint="@color/purple_primary"
+        android:textColor="@color/text_white"/>
+
+</LinearLayout>
