@@ -32,51 +32,69 @@ public class Cadastro extends AppCompatActivity {
 
         Button btnDoSignup = findViewById(R.id.btnDoSignup);
         ImageView btnVoltar = findViewById(R.id.btnVoltarCadastro);
+        TextView txtIrParaLogin = findViewById(R.id.txtIrParaLogin);
 
         configurarMascaraData();
 
         btnDoSignup.setOnClickListener(v -> realizarCadastro());
 
-        btnVoltar.setOnClickListener(v -> finish());
+        btnVoltar.setOnClickListener(v -> {
+            Intent intent = new Intent(Cadastro.this, Home.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        });
+
+        if (txtIrParaLogin != null) {
+            txtIrParaLogin.setOnClickListener(v -> {
+                Intent intent = new Intent(Cadastro.this, Login.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            });
+        }
     }
 
     private void configurarMascaraData() {
         edtBirthday.addTextChangedListener(new TextWatcher() {
             private boolean isUpdating = false;
-            private String oldString = "";
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String str = s.toString().replaceAll("[^\\d]", "");
-                String mask = "##/##/####";
-                String novaString = "";
-
                 if (isUpdating) {
-                    oldString = str;
                     isUpdating = false;
                     return;
                 }
 
-                int i = 0;
-                for (char m : mask.toCharArray()) {
-                    if (m != '#' && str.length() > oldString.length()) {
-                        novaString += m;
-                        continue;
-                    }
-                    try {
-                        novaString += str.charAt(i);
-                        i++;
-                    } catch (Exception e) {
-                        break;
+                String str = s.toString().replaceAll("[^0-9]", "");
+                StringBuilder formatado = new StringBuilder();
+
+                if (str.length() >= 2) {
+                    formatado.append(str.substring(0, 2));
+                    if (str.length() > 2) formatado.append("/");
+                } else {
+                    formatado.append(str);
+                }
+
+                if (str.length() >= 4) {
+                    formatado.append(str.substring(2, 4));
+                    if (str.length() > 4) formatado.append("/");
+                } else if (str.length() > 2) {
+                    formatado.append(str.substring(2));
+                }
+
+                if (str.length() > 4) {
+                    if (str.length() > 8) {
+                        formatado.append(str.substring(4, 8));
+                    } else {
+                        formatado.append(str.substring(4));
                     }
                 }
 
                 isUpdating = true;
-                edtBirthday.setText(novaString);
-                edtBirthday.setSelection(novaString.length());
+                edtBirthday.setText(formatado.toString());
+                edtBirthday.setSelection(formatado.length());
             }
 
             @Override
@@ -115,7 +133,9 @@ public class Cadastro extends AppCompatActivity {
 
             runOnUiThread(() -> {
                 Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show();
-                finish();
+                Intent intent = new Intent(Cadastro.this, Home.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             });
         }).start();
     }
