@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/bg_dark">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Novo Treino"
+            android:textColor="@color/purple_primary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/edtTipoTreino"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Tipo (Ex: Academia, Cardio)"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_white"
+            android:backgroundTint="@color/purple_dark"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/edtDuracao"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Duração (Ex: 1h 20min)"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_white"
+            android:backgroundTint="@color/purple_dark"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/edtDataTreino"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Data (Ex: 10/05/2026)"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_white"
+            android:backgroundTint="@color/purple_dark"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/edtDescricaoTreino"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="top|start"
+            android:hint="Descrição (Repetições, exercícios...)"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_white"
+            android:backgroundTint="@color/purple_dark"
+            android:layout_marginBottom="24dp"/>
+
+        <Button
+            android:id="@+id/btnSalvarNovoTreino"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Salvar Treino"
+            android:backgroundTint="@color/purple_primary"
+            android:textColor="@color/text_white"/>
+    </LinearLayout>
+</ScrollView>

@@ -51,7 +51,7 @@ public class Home extends AppCompatActivity {
         navHome.post(() -> atualizarIcones(navHome));
 
         btnNovoTreino.setOnClickListener(v -> {
-            Toast.makeText(this, "Ainda não implementado", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(Home.this, NovoTreino.class));
         });
 
         navHistorico.setOnClickListener(v -> {

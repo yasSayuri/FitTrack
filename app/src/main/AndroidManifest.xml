@@ -25,6 +25,7 @@
         <activity android:name=".Cadastro" />
         <activity android:name=".Home" />
         <activity android:name=".Onboarding" />
+        <activity android:name=".NovoTreino" />
 
     </application>
 
