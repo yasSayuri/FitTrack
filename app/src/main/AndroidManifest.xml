@@ -26,6 +26,7 @@
         <activity android:name=".Home" />
         <activity android:name=".Onboarding" />
         <activity android:name=".NovoTreino" />
+        <activity android:name=".CriarTreino" />
 
     </application>
 

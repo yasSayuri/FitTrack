@@ -20,6 +20,9 @@ public class NovoTreino extends AppCompatActivity {
         EditText edtData = findViewById(R.id.edtDataTreino);
         EditText edtDescricao = findViewById(R.id.edtDescricaoTreino);
         Button btnSalvar = findViewById(R.id.btnSalvarNovoTreino);
+        Button btnCancelar = findViewById(R.id.btnCancelarNovoTreino);
+
+        btnCancelar.setOnClickListener(v -> finish());
 
         btnSalvar.setOnClickListener(v -> {
             String tipo = edtTipo.getText().toString();

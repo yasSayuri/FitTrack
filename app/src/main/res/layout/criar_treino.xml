@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Novo Treino"
+            android:text="Criar Rotina de Treino"
             android:textColor="@color/purple_primary"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -22,45 +22,56 @@
             android:layout_gravity="center"/>
 
         <EditText
-            android:id="@+id/edtTipoTreino"
+            android:id="@+id/edtTipoRotina"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="Tipo (Ex: Academia, Cardio)"
+            android:hint="Para qual tipo? (Ex: Academia)"
             android:textColorHint="@color/text_hint"
             android:textColor="@color/text_white"
             android:backgroundTint="@color/purple_dark"
             android:layout_marginBottom="8dp"/>
 
         <EditText
-            android:id="@+id/edtDuracao"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Duração (Ex: 1h 20min)"
-            android:textColorHint="@color/text_hint"
-            android:textColor="@color/text_white"
-            android:backgroundTint="@color/purple_dark"
-            android:layout_marginBottom="8dp"/>
-
-        <EditText
-            android:id="@+id/edtDataTreino"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Data (Ex: 10/05/2026)"
-            android:textColorHint="@color/text_hint"
-            android:textColor="@color/text_white"
-            android:backgroundTint="@color/purple_dark"
-            android:layout_marginBottom="8dp"/>
-
-        <EditText
-            android:id="@+id/edtDescricaoTreino"
+            android:id="@+id/edtExerciciosRotina"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:gravity="top|start"
-            android:hint="Descrição (Repetições, exercícios...)"
+            android:hint="Exercícios (Ex: Supino, Agachamento...)"
             android:textColorHint="@color/text_hint"
             android:textColor="@color/text_white"
             android:backgroundTint="@color/purple_dark"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginBottom="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="24dp">
+
+            <EditText
+                android:id="@+id/edtSeriesRotina"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:hint="Séries"
+                android:layout_marginEnd="4dp"
+                android:textColorHint="@color/text_hint"
+                android:textColor="@color/text_white"
+                android:backgroundTint="@color/purple_dark"/>
+
+            <EditText
+                android:id="@+id/edtRepeticoesRotina"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:hint="Repetições"
+                android:layout_marginStart="4dp"
+                android:textColorHint="@color/text_hint"
+                android:textColor="@color/text_white"
+                android:backgroundTint="@color/purple_dark"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,7 +79,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnCancelarNovoTreino"
+                android:id="@+id/btnCancelarCriarTreino"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_weight="1"
@@ -78,7 +89,7 @@
                 android:textColor="@color/text_white"/>
 
             <Button
-                android:id="@+id/btnSalvarNovoTreino"
+                android:id="@+id/btnSalvarCriarTreino"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_weight="1"
