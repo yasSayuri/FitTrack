@@ -36,7 +36,7 @@ O aplicativo foi construído com foco em uma experiência premium e minimalista,
 
 ## 💾 Banco de Dados
 
-Você utilizou o banco de dados **SQLite** através da biblioteca **Room** porque ele é o padrão oficial para armazenamento local no Android, sendo uma opção mais leve que economiza a bateria do celular por não exigir conexões constantes de rede.
+Foi utilizado o banco de dados **SQLite** através da biblioteca **Room** porque ele é o padrão oficial para armazenamento local no Android, sendo uma opção mais leve que economiza a bateria do celular por não exigir conexões constantes de rede.
 O banco de dados encontra-se estruturado de forma relacional com as seguintes entidades principais:
 
 * 
