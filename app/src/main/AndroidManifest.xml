@@ -24,6 +24,7 @@
         <activity android:name=".Login" />
         <activity android:name=".Cadastro" />
         <activity android:name=".Home" />
+        <activity android:name=".Onboarding" />
 
     </application>
 

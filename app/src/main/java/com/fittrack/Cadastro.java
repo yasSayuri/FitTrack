@@ -35,6 +35,7 @@ public class Cadastro extends AppCompatActivity {
         TextView txtIrParaLogin = findViewById(R.id.txtIrParaLogin);
 
         configurarMascaraData();
+        configurarMascaraCpf();
 
         btnDoSignup.setOnClickListener(v -> realizarCadastro());
 
@@ -95,6 +96,62 @@ public class Cadastro extends AppCompatActivity {
                 isUpdating = true;
                 edtBirthday.setText(formatado.toString());
                 edtBirthday.setSelection(formatado.length());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+    }
+
+    private void configurarMascaraCpf() {
+        edtCpf.addTextChangedListener(new TextWatcher() {
+            private boolean isUpdating = false;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isUpdating) {
+                    isUpdating = false;
+                    return;
+                }
+
+                String str = s.toString().replaceAll("[^0-9]", "");
+                StringBuilder formatado = new StringBuilder();
+
+                if (str.length() >= 3) {
+                    formatado.append(str.substring(0, 3));
+                    if (str.length() > 3) formatado.append(".");
+                } else {
+                    formatado.append(str);
+                }
+
+                if (str.length() >= 6) {
+                    formatado.append(str.substring(3, 6));
+                    if (str.length() > 6) formatado.append(".");
+                } else if (str.length() > 3) {
+                    formatado.append(str.substring(3));
+                }
+
+                if (str.length() >= 9) {
+                    formatado.append(str.substring(6, 9));
+                    if (str.length() > 9) formatado.append("-");
+                } else if (str.length() > 6) {
+                    formatado.append(str.substring(6));
+                }
+
+                if (str.length() > 9) {
+                    if (str.length() > 11) {
+                        formatado.append(str.substring(9, 11));
+                    } else {
+                        formatado.append(str.substring(9));
+                    }
+                }
+
+                isUpdating = true;
+                edtCpf.setText(formatado.toString());
+                edtCpf.setSelection(formatado.length());
             }
 
             @Override

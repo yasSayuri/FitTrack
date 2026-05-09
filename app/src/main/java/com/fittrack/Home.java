@@ -156,44 +156,14 @@ public class Home extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(false);
 
-        LinearLayout layoutInicial = dialog.findViewById(R.id.layoutInicial);
-        LinearLayout layoutFormulario = dialog.findViewById(R.id.layoutFormulario);
         Button btnDeixaPraDepois = dialog.findViewById(R.id.btnDeixaPraDepois);
         Button btnVamos = dialog.findViewById(R.id.btnVamos);
-        Button btnSalvarTreino = dialog.findViewById(R.id.btnSalvarTreino);
-
-        EditText edtIdade = dialog.findViewById(R.id.edtIdade);
-        EditText edtPeso = dialog.findViewById(R.id.edtPeso);
-        EditText edtAltura = dialog.findViewById(R.id.edtAltura);
 
         btnDeixaPraDepois.setOnClickListener(v -> dialog.dismiss());
 
         btnVamos.setOnClickListener(v -> {
-            layoutInicial.setVisibility(View.GONE);
-            layoutFormulario.setVisibility(View.VISIBLE);
-        });
-
-        btnSalvarTreino.setOnClickListener(v -> {
-            String idade = (edtIdade != null && edtIdade.getText() != null) ? edtIdade.getText().toString() : "";
-            String peso = (edtPeso != null && edtPeso.getText() != null) ? edtPeso.getText().toString() : "";
-            String altura = (edtAltura != null && edtAltura.getText() != null) ? edtAltura.getText().toString() : "";
-
-            new Thread(() -> {
-                AppDatabase db = AppDatabase.getInstance(Home.this);
-                User user = db.userDao().getLastUser();
-
-                if (user != null) {
-                    user.idade = idade;
-                    user.peso = peso;
-                    user.altura = altura;
-                    db.userDao().update(user);
-                }
-
-                runOnUiThread(() -> {
-                    Toast.makeText(Home.this, "Treino cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                });
-            }).start();
+            dialog.dismiss();
+            startActivity(new Intent(Home.this, Onboarding.class));
         });
 
         dialog.show();
