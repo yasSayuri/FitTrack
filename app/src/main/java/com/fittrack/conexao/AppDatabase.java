@@ -11,7 +11,7 @@ import com.fittrack.dao.TreinoDao;
 import com.fittrack.dao.TreinoPlanoDao;
 import com.fittrack.dao.UserDao;
 
-@Database(entities = {User.class, Treino.class, TreinoPlano.class}, version = 15, exportSchema = false)
+@Database(entities = {User.class, Treino.class, TreinoPlano.class}, version = 17, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();

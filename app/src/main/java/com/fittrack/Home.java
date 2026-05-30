@@ -42,7 +42,6 @@ public class Home extends AppCompatActivity {
         barSab = findViewById(R.id.barSab);
 
         findViewById(R.id.btnNovoTreino).setOnClickListener(v -> startActivity(new Intent(Home.this, NovoTreino.class)));
-
         setupNav();
     }
 
@@ -61,7 +60,6 @@ public class Home extends AppCompatActivity {
         new Thread(() -> {
             SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
             int userIdLogado = prefs.getInt("userId", -1);
-
             if (userIdLogado == -1) return;
 
             try {
@@ -71,14 +69,10 @@ public class Home extends AppCompatActivity {
                 if (usuarioAtual != null) {
                     runOnUiThread(() -> {
                         String primeiroNome = usuarioAtual.nome != null ? usuarioAtual.nome.split(" ")[0] : "User";
-                        if (txtNomeHome != null) {
-                            txtNomeHome.setText("Olá, " + primeiroNome);
-                        }
+                        if (txtNomeHome != null) txtNomeHome.setText("Olá, " + primeiroNome);
                     });
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) { e.printStackTrace(); }
         }).start();
     }
 
@@ -86,7 +80,6 @@ public class Home extends AppCompatActivity {
         new Thread(() -> {
             SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
             int userIdLogado = prefs.getInt("userId", -1);
-
             if (userIdLogado == -1) return;
 
             try {
@@ -94,17 +87,15 @@ public class Home extends AppCompatActivity {
                 List<Treino> lista = db.treinoDao().getTreinosByUserId(userIdLogado);
 
                 int totalTreinos = lista.size();
-                int totalHoras = 0;
+                int totalMinutos = 0;
                 Set<String> diasUnicos = new HashSet<>();
                 Set<Integer> diasComTreino = new HashSet<>();
 
                 for (Treino t : lista) {
                     try {
-                        if (t.duracao != null) {
-                            String apenasNumeros = t.duracao.replaceAll("[^0-9]", "");
-                            if (!apenasNumeros.isEmpty()) {
-                                totalHoras += Integer.parseInt(apenasNumeros);
-                            }
+                        if (t.duracao != null && t.duracao.contains(":")) {
+                            String[] partes = t.duracao.split(":");
+                            totalMinutos += (Integer.parseInt(partes[0]) * 60) + Integer.parseInt(partes[1]);
                         }
                     } catch (Exception ignored) {}
 
@@ -119,18 +110,18 @@ public class Home extends AppCompatActivity {
                         }
                     } catch (Exception ignored) {}
 
-                    if (t.data != null && !t.data.trim().isEmpty()) {
-                        diasUnicos.add(t.data);
-                    }
+                    if (t.data != null && !t.data.trim().isEmpty()) diasUnicos.add(t.data);
                 }
 
+                int horas = totalMinutos / 60;
+                int minutos = totalMinutos % 60;
+                final String txtHorasFinal = horas + "h " + minutos + "m";
                 final int fTreinos = totalTreinos;
-                final int fHoras = totalHoras;
                 final int fDias = diasUnicos.size();
 
                 runOnUiThread(() -> {
                     txtTotalTreinos.setText(String.valueOf(fTreinos));
-                    txtTotalHoras.setText(fHoras + "h");
+                    txtTotalHoras.setText(txtHorasFinal);
                     txtDiasTreinados.setText(String.valueOf(fDias));
 
                     View[] barras = {barDom, barSeg, barTer, barQua, barQui, barSex, barSab};
@@ -141,9 +132,7 @@ public class Home extends AppCompatActivity {
                         }
                     }
                 });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) { e.printStackTrace(); }
         }).start();
     }
 
@@ -159,7 +148,6 @@ public class Home extends AppCompatActivity {
             for (Fragment fragment : getSupportFragmentManager().getFragments()) {
                 getSupportFragmentManager().beginTransaction().remove(fragment).commit();
             }
-            // Forçamos a atualização ao clicar no botão de Home!
             atualizarDashboard();
             carregarNomeUsuario();
         });

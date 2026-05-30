@@ -29,7 +29,6 @@ public class Configuracoes extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.configuracoes, container, false);
 
-        ImageView btnVoltar = view.findViewById(R.id.btnVoltar);
         LinearLayout btnMudarEmail = view.findViewById(R.id.btnMudarEmail);
         LinearLayout btnMudarSenha = view.findViewById(R.id.btnMudarSenha);
         LinearLayout btnTermos = view.findViewById(R.id.btnTermos);
@@ -38,12 +37,6 @@ public class Configuracoes extends Fragment {
         SwitchCompat switchNotificacoes = view.findViewById(R.id.switchNotificacoes);
 
         carregarUsuario();
-
-        btnVoltar.setOnClickListener(v -> {
-            if (getActivity() != null) {
-                getActivity().findViewById(R.id.nav_home).performClick();
-            }
-        });
 
         btnMudarEmail.setOnClickListener(v -> {
             if (usuarioAtual != null) mostrarDialogEmail();

@@ -26,15 +26,8 @@ public class Treinos extends Fragment {
         View view = inflater.inflate(R.layout.treinos, container, false);
         localInflater = inflater;
 
-        ImageView btnVoltar = view.findViewById(R.id.btnVoltar);
         Button btnCriarTreino = view.findViewById(R.id.btnCriarTreino);
         containerCards = view.findViewById(R.id.containerCardsTreinos);
-
-        btnVoltar.setOnClickListener(v -> {
-            if (getActivity() != null) {
-                getActivity().findViewById(R.id.nav_home).performClick();
-            }
-        });
 
         btnCriarTreino.setOnClickListener(v -> {
             startActivity(new Intent(requireContext(), CriarTreino.class));

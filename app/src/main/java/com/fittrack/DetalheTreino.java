@@ -41,23 +41,23 @@ public class DetalheTreino extends AppCompatActivity {
         Button btnEditar = findViewById(R.id.btnEditar);
         Button btnDeletar = findViewById(R.id.btnDeletar);
 
+        String durFormatada = "0h 0m";
+        if (duracao != null && duracao.contains(":")) {
+            try {
+                String[] p = duracao.split(":");
+                durFormatada = p[0] + "h " + p[1] + "m";
+            } catch (Exception ignored) {}
+        }
+
         if (txtTipo != null) txtTipo.setText("Tipo: " + (tipo != null ? tipo : "--"));
         if (txtData != null) txtData.setText("Data: " + (data != null ? data : "--"));
-        if (txtDuracao != null) txtDuracao.setText("Duração: " + (duracao != null ? duracao : "0") + "h");
+        if (txtDuracao != null) txtDuracao.setText("Duração: " + durFormatada);
         if (txtCalorias != null) txtCalorias.setText("Calorias: " + (calorias != null ? calorias : "0") + "k");
         if (txtDescricao != null) txtDescricao.setText("Descrição: " + (desc != null ? desc : "--"));
 
-        if (btnVoltar != null) {
-            btnVoltar.setOnClickListener(v -> finish());
-        }
-
-        if (btnDeletar != null) {
-            btnDeletar.setOnClickListener(v -> deletarTreino());
-        }
-
-        if (btnEditar != null) {
-            btnEditar.setOnClickListener(v -> mostrarPopUpEdicao(tipo, duracao, calorias, data, desc));
-        }
+        if (btnVoltar != null) btnVoltar.setOnClickListener(v -> finish());
+        if (btnDeletar != null) btnDeletar.setOnClickListener(v -> deletarTreino());
+        if (btnEditar != null) btnEditar.setOnClickListener(v -> mostrarPopUpEdicao(tipo, duracao, calorias, data, desc));
     }
 
     private void deletarTreino() {
@@ -89,6 +89,22 @@ public class DetalheTreino extends AppCompatActivity {
         edtCalorias.setText(calorias);
         edtData.setText(data);
         edtDesc.setText(desc);
+
+        edtDuracao.setFocusable(false);
+        edtDuracao.setClickable(true);
+        edtDuracao.setOnClickListener(view -> {
+            int h = 0, m = 0;
+            try {
+                if(edtDuracao.getText().toString().contains(":")){
+                    String[] p = edtDuracao.getText().toString().split(":");
+                    h = Integer.parseInt(p[0]);
+                    m = Integer.parseInt(p[1]);
+                }
+            } catch(Exception ignored){}
+            new android.app.TimePickerDialog(this, (timeView, hourOfDay, minute) -> {
+                edtDuracao.setText(String.format(java.util.Locale.getDefault(), "%02d:%02d", hourOfDay, minute));
+            }, h, m, true).show();
+        });
 
         dialog.findViewById(R.id.btnCancelarEditTreino).setOnClickListener(v -> dialog.dismiss());
 

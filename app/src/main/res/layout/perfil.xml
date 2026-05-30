@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:background="@color/bg_dark">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -10,36 +11,27 @@
         android:layout_height="wrap_content"
         android:paddingBottom="40dp">
 
-        <LinearLayout
-            android:id="@+id/headerPerfil"
+        <TextView
+            android:id="@+id/txtTituloTela"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
+            android:text="Perfil"
+            android:textColor="@color/text_white"
+            android:textSize="28sp"
+            android:textStyle="bold"
             android:layout_marginTop="32dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"/>
 
-            <ImageView
-                android:id="@+id/btnVoltar"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_back"
-                app:tint="@color/purple_primary"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:layout_marginEnd="12dp"/>
-
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Perfil"
-                android:textColor="@color/text_white"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-        </LinearLayout>
+        <View
+            android:id="@+id/viewDivisoria"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/purple_primary"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtTituloTela"/>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardProfileInfo"
@@ -50,7 +42,7 @@
             app:cardBackgroundColor="@color/bg_gray"
             app:cardCornerRadius="32dp"
             app:cardElevation="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/headerPerfil">
+            app:layout_constraintTop_toBottomOf="@+id/viewDivisoria">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -136,9 +128,9 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/btnAddPhoto"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            app:cardCornerRadius="14dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:cardCornerRadius="16dp"
             app:cardElevation="6dp"
             app:cardBackgroundColor="@color/purple_primary"
             app:layout_constraintBottom_toBottomOf="@+id/cvProfileImage"
@@ -164,7 +156,7 @@
             android:textColor="@color/text_white"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="28dp"
             android:layout_marginStart="16dp"
             app:layout_constraintTop_toBottomOf="@+id/cardProfileInfo"
             app:layout_constraintStart_toStartOf="parent"/>
@@ -193,29 +185,9 @@
                     android:orientation="vertical"
                     android:gravity="center"
                     android:paddingVertical="20dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_training"
-                        app:tint="@color/purple_primary"/>
-
-                    <TextView
-                        android:id="@+id/txtCountTreinos"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textColor="@color/text_white"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_marginTop="12dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Treinos"
-                        android:textColor="@color/text_hint"
-                        android:textSize="12sp"/>
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_training" app:tint="@color/purple_primary"/>
+                    <TextView android:id="@+id/txtCountTreinos" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textColor="@color/text_white" android:textSize="18sp" android:textStyle="bold" android:layout_marginTop="12dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Treinos" android:textColor="@color/text_hint" android:textSize="12sp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -234,29 +206,9 @@
                     android:orientation="vertical"
                     android:gravity="center"
                     android:paddingVertical="20dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_history"
-                        app:tint="@color/purple_primary"/>
-
-                    <TextView
-                        android:id="@+id/txtTotalDuracao"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0h"
-                        android:textColor="@color/text_white"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_marginTop="12dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Duração"
-                        android:textColor="@color/text_hint"
-                        android:textSize="12sp"/>
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_history" app:tint="@color/purple_primary"/>
+                    <TextView android:id="@+id/txtTotalDuracao" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0h 0m" android:textColor="@color/text_white" android:textSize="18sp" android:textStyle="bold" android:layout_marginTop="12dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Duração" android:textColor="@color/text_hint" android:textSize="12sp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -275,32 +227,11 @@
                     android:orientation="vertical"
                     android:gravity="center"
                     android:paddingVertical="20dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@android:drawable/ic_menu_agenda"
-                        app:tint="@color/purple_primary"/>
-
-                    <TextView
-                        android:id="@+id/txtTotalCalorias"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textColor="@color/text_white"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_marginTop="12dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Calorias"
-                        android:textColor="@color/text_hint"
-                        android:textSize="12sp"/>
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_agenda" app:tint="@color/purple_primary"/>
+                    <TextView android:id="@+id/txtTotalCalorias" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textColor="@color/text_white" android:textSize="18sp" android:textStyle="bold" android:layout_marginTop="12dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Calorias" android:textColor="@color/text_hint" android:textSize="12sp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
         </LinearLayout>
 
         <Button
@@ -311,7 +242,7 @@
             android:textColor="@color/text_white"
             android:backgroundTint="@color/purple_primary"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="20dp"
             app:cornerRadius="16dp"
             app:layout_constraintTop_toBottomOf="@+id/llStats"/>
 

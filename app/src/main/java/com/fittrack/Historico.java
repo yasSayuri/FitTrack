@@ -24,14 +24,7 @@ public class Historico extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.historico, container, false);
         localInflater = inflater;
-        ImageView btnVoltar = view.findViewById(R.id.btnVoltar);
         containerCards = view.findViewById(R.id.containerCards);
-
-        btnVoltar.setOnClickListener(v -> {
-            if (getActivity() != null) {
-                getActivity().findViewById(R.id.nav_home).performClick();
-            }
-        });
 
         return view;
     }
@@ -65,9 +58,17 @@ public class Historico extends Fragment {
                         TextView txtData = card.findViewById(R.id.txtDataCard);
                         TextView txtDuracao = card.findViewById(R.id.txtDuracaoCard);
 
+                        String durFormatada = "0h 0m";
+                        if (t.duracao != null && t.duracao.contains(":")) {
+                            try {
+                                String[] p = t.duracao.split(":");
+                                durFormatada = p[0] + "h " + p[1] + "m";
+                            } catch (Exception ignored) {}
+                        }
+
                         txtTipo.setText(t.tipo != null ? t.tipo : "");
                         txtData.setText(t.data != null ? t.data : "");
-                        txtDuracao.setText((t.duracao != null ? t.duracao : "0") + "h");
+                        txtDuracao.setText(durFormatada);
 
                         card.setOnClickListener(v -> {
                             Intent intent = new Intent(requireContext(), DetalheTreino.class);

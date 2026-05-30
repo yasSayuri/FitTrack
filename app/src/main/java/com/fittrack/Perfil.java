@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
@@ -56,7 +57,6 @@ public class Perfil extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.perfil, container, false);
 
-        ImageView btnVoltar = view.findViewById(R.id.btnVoltar);
         Button btnEditar = view.findViewById(R.id.btnEditarPerfil);
         Button btnLogout = view.findViewById(R.id.btnLogout);
         CardView btnAddPhoto = view.findViewById(R.id.btnAddPhoto);
@@ -71,13 +71,6 @@ public class Perfil extends Fragment {
         txtTotalCalorias = view.findViewById(R.id.txtTotalCalorias);
 
         carregarDadosUsuario();
-
-        btnVoltar.setOnClickListener(v -> {
-            esconderTeclado();
-            if (getActivity() != null) {
-                getActivity().findViewById(R.id.nav_home).performClick();
-            }
-        });
 
         btnAddPhoto.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -99,14 +92,6 @@ public class Perfil extends Fragment {
         return view;
     }
 
-    private void esconderTeclado() {
-        View view = getView();
-        if (view != null && getActivity() != null) {
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -114,16 +99,13 @@ public class Perfil extends Fragment {
     }
 
     private void carregarEstatisticas() {
-        // Guarda as referências da tela para a Thread não se perder se você navegar muito rápido
         final Context context = getContext();
         final Activity activity = getActivity();
-
         if (context == null || activity == null) return;
 
         new Thread(() -> {
             SharedPreferences prefs = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
             int userIdLogado = prefs.getInt("userId", -1);
-
             if (userIdLogado == -1) return;
 
             try {
@@ -131,14 +113,14 @@ public class Perfil extends Fragment {
                 List<Treino> lista = db.treinoDao().getTreinosByUserId(userIdLogado);
 
                 int totalTreinos = lista.size();
-                int totalHoras = 0;
+                int totalMinutos = 0;
                 int totalCalorias = 0;
 
                 for (Treino t : lista) {
                     try {
-                        if (t.duracao != null) {
-                            String apenasNumeros = t.duracao.replaceAll("[^0-9]", "");
-                            if (!apenasNumeros.isEmpty()) totalHoras += Integer.parseInt(apenasNumeros);
+                        if (t.duracao != null && t.duracao.contains(":")) {
+                            String[] partes = t.duracao.split(":");
+                            totalMinutos += (Integer.parseInt(partes[0]) * 60) + Integer.parseInt(partes[1]);
                         }
                     } catch (Exception ignored) {}
 
@@ -150,43 +132,38 @@ public class Perfil extends Fragment {
                     } catch (Exception ignored) {}
                 }
 
+                int horas = totalMinutos / 60;
+                int minutos = totalMinutos % 60;
+                final String txtHorasFinal = horas + "h " + minutos + "m";
+
                 final int finalTotalTreinos = totalTreinos;
-                final int finalTotalHoras = totalHoras;
                 final int finalTotalCalorias = totalCalorias;
 
                 activity.runOnUiThread(() -> {
                     txtCountTreinos.setText(String.valueOf(finalTotalTreinos));
-                    txtTotalDuracao.setText(finalTotalHoras + "h");
+                    txtTotalDuracao.setText(txtHorasFinal);
                     txtTotalCalorias.setText(finalTotalCalorias + "k");
                 });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) { e.printStackTrace(); }
         }).start();
     }
 
     private void carregarDadosUsuario() {
         final Context context = getContext();
         final Activity activity = getActivity();
-
         if (context == null || activity == null) return;
 
         new Thread(() -> {
             SharedPreferences prefs = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
             int userIdLogado = prefs.getInt("userId", -1);
-
             if (userIdLogado == -1) return;
 
             try {
                 AppDatabase db = AppDatabase.getInstance(context);
                 usuarioAtual = db.userDao().getUserById(userIdLogado);
 
-                if (usuarioAtual != null) {
-                    activity.runOnUiThread(this::atualizarTextosDaTela);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                if (usuarioAtual != null) activity.runOnUiThread(this::atualizarTextosDaTela);
+            } catch (Exception e) { e.printStackTrace(); }
         }).start();
     }
 
@@ -209,7 +186,6 @@ public class Perfil extends Fragment {
     private void salvarFotoNoBanco(String uriFoto) {
         final Context context = getContext();
         if (context == null) return;
-
         new Thread(() -> {
             if (usuarioAtual != null) {
                 usuarioAtual.fotoPerfil = uriFoto;
@@ -259,5 +235,10 @@ public class Perfil extends Fragment {
             }).start();
         });
         dialog.show();
+
+        if (dialog.getWindow() != null) {
+            int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.95);
+            dialog.getWindow().setLayout(width, LinearLayout.LayoutParams.WRAP_CONTENT);
+        }
     }
 }

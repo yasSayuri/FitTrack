@@ -30,6 +30,14 @@ public class NovoTreino extends AppCompatActivity {
 
         configurarMascaraData();
 
+        edtDuracao.setFocusable(false);
+        edtDuracao.setClickable(true);
+        edtDuracao.setOnClickListener(v -> {
+            new android.app.TimePickerDialog(this, (view, hourOfDay, minute) -> {
+                edtDuracao.setText(String.format(java.util.Locale.getDefault(), "%02d:%02d", hourOfDay, minute));
+            }, 0, 0, true).show();
+        });
+
         btnCancelar.setOnClickListener(v -> finish());
 
         btnSalvar.setOnClickListener(v -> {
@@ -81,49 +89,28 @@ public class NovoTreino extends AppCompatActivity {
     private void configurarMascaraData() {
         edtData.addTextChangedListener(new TextWatcher() {
             private boolean isUpdating = false;
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (isUpdating) {
-                    isUpdating = false;
-                    return;
-                }
-
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isUpdating) { isUpdating = false; return; }
                 String str = s.toString().replaceAll("[^0-9]", "");
                 StringBuilder formatado = new StringBuilder();
-
                 if (str.length() >= 2) {
                     formatado.append(str.substring(0, 2));
                     if (str.length() > 2) formatado.append("/");
-                } else {
-                    formatado.append(str);
-                }
-
+                } else { formatado.append(str); }
                 if (str.length() >= 4) {
                     formatado.append(str.substring(2, 4));
                     if (str.length() > 4) formatado.append("/");
-                } else if (str.length() > 2) {
-                    formatado.append(str.substring(2));
-                }
-
+                } else if (str.length() > 2) { formatado.append(str.substring(2)); }
                 if (str.length() > 4) {
-                    if (str.length() > 8) {
-                        formatado.append(str.substring(4, 8));
-                    } else {
-                        formatado.append(str.substring(4));
-                    }
+                    if (str.length() > 8) formatado.append(str.substring(4, 8));
+                    else formatado.append(str.substring(4));
                 }
-
                 isUpdating = true;
                 edtData.setText(formatado.toString());
                 edtData.setSelection(formatado.length());
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
+            @Override public void afterTextChanged(Editable s) {}
         });
     }
 }
