@@ -27,6 +27,8 @@
         <activity android:name=".Onboarding" />
         <activity android:name=".NovoTreino" />
         <activity android:name=".CriarTreino" />
+        <activity android:name=".DetalheTreino" />
+        <activity android:name=".DetalheTreinoPlano" />
 
     </application>
 

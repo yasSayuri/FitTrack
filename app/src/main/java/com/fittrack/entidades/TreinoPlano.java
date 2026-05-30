@@ -1,5 +1,6 @@
 package com.fittrack.entidades;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -8,6 +9,7 @@ public class TreinoPlano {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
+    public int userId;
     public String tipo;
     public String exercicios;
     public String series;

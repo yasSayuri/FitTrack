@@ -1,7 +1,9 @@
 package com.fittrack;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -77,9 +79,16 @@ public class Configuracoes extends Fragment {
     }
 
     private void carregarUsuario() {
+        if (getActivity() == null) return;
+
+        SharedPreferences prefs = getActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        int userIdLogado = prefs.getInt("userId", -1);
+
+        if (userIdLogado == -1) return;
+
         new Thread(() -> {
             AppDatabase db = AppDatabase.getInstance(getContext());
-            usuarioAtual = db.userDao().getLastUser();
+            usuarioAtual = db.userDao().getUserById(userIdLogado);
         }).start();
     }
 

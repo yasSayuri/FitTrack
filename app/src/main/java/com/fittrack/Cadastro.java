@@ -1,6 +1,8 @@
 package com.fittrack;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -188,11 +190,21 @@ public class Cadastro extends AppCompatActivity {
 
             db.userDao().register(novoUsuario);
 
+            User userRegistrado = db.userDao().login(email, senha);
+
+            if (userRegistrado != null) {
+                SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt("userId", userRegistrado.id);
+                editor.apply();
+            }
+
             runOnUiThread(() -> {
                 Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(Cadastro.this, Home.class);
+                Intent intent = new Intent(Cadastro.this, Onboarding.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
             });
         }).start();
     }

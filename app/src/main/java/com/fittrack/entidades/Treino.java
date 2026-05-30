@@ -7,9 +7,10 @@ import androidx.room.PrimaryKey;
 public class Treino {
     @PrimaryKey(autoGenerate = true)
     public int id;
-
+    public int userId;
     public String tipo;
     public String duracao;
     public String data;
     public String descricao;
+    public String calorias;
 }

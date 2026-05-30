@@ -1,5 +1,7 @@
 package com.fittrack;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,9 +27,17 @@ public class Onboarding extends AppCompatActivity {
             String peso = edtPeso.getText().toString();
             String altura = edtAltura.getText().toString();
 
+            SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+            int userIdLogado = prefs.getInt("userId", -1);
+
+            if (userIdLogado == -1) {
+                Toast.makeText(this, "Erro de sessão!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             new Thread(() -> {
                 AppDatabase db = AppDatabase.getInstance(Onboarding.this);
-                User user = db.userDao().getLastUser();
+                User user = db.userDao().getUserById(userIdLogado);
 
                 if (user != null) {
                     user.idade = idade;

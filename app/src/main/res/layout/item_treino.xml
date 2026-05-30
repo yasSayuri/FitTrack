@@ -8,32 +8,50 @@
     app:cardCornerRadius="16dp"
     app:cardElevation="0dp">
 
-    <LinearLayout
-        android:padding="16dp"
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
-        <TextView
-            android:id="@+id/txtTipoCard"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/containerInfo"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_white"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
+            android:orientation="vertical"
+            android:layout_toStartOf="@+id/imgSeta">
 
-        <TextView
-            android:id="@+id/txtDuracaoCard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/purple_primary"
-            android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/txtTipoCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/txtDescricaoCard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text_hint"
-            android:textSize="12sp"/>
-    </LinearLayout>
+            <TextView
+                android:id="@+id/txtDataCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_hint"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtDuracaoCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/purple_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imgSeta"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_chevron_right"
+            app:tint="@color/text_hint" />
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -35,7 +35,19 @@
             android:id="@+id/edtDuracao"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="Duração (Ex: 1h 20min)"
+            android:inputType="number"
+            android:hint="Duração (Em horas. Ex: 1, 2...)"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_white"
+            android:backgroundTint="@color/purple_dark"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/edtCaloriasTreino"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="number"
+            android:hint="Calorias Queimadas (Ex: 300)"
             android:textColorHint="@color/text_hint"
             android:textColor="@color/text_white"
             android:backgroundTint="@color/purple_dark"
@@ -45,6 +57,7 @@
             android:id="@+id/edtDataTreino"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:inputType="date"
             android:hint="Data (Ex: 10/05/2026)"
             android:textColorHint="@color/text_hint"
             android:textColor="@color/text_white"

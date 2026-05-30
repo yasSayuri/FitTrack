@@ -65,7 +65,6 @@
                     android:id="@+id/txtNome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Yasmin"
                     android:textColor="@color/text_white"
                     android:textSize="22sp"
                     android:textStyle="bold"/>
@@ -74,7 +73,6 @@
                     android:id="@+id/txtUsername"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@yasmin"
                     android:textColor="@color/text_hint"
                     android:textSize="14sp"
                     android:layout_marginTop="4dp"/>
@@ -105,7 +103,6 @@
                     android:id="@+id/txtBio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text='"Idade: 22 Peso: 53kg Altura: 1,60"'
                     android:textColor="@color/purple_primary"
                     android:textSize="12sp"
                     android:textAlignment="center"
@@ -204,9 +201,10 @@
                         app:tint="@color/purple_primary"/>
 
                     <TextView
+                        android:id="@+id/txtCountTreinos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="243"
+                        android:text="0"
                         android:textColor="@color/text_white"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -244,9 +242,10 @@
                         app:tint="@color/purple_primary"/>
 
                     <TextView
+                        android:id="@+id/txtTotalDuracao"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="300h"
+                        android:text="0h"
                         android:textColor="@color/text_white"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -284,9 +283,10 @@
                         app:tint="@color/purple_primary"/>
 
                     <TextView
+                        android:id="@+id/txtTotalCalorias"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="50k"
+                        android:text="0"
                         android:textColor="@color/text_white"
                         android:textSize="18sp"
                         android:textStyle="bold"

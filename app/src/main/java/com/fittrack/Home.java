@@ -1,176 +1,174 @@
 package com.fittrack;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.fittrack.conexao.AppDatabase;
+import com.fittrack.entidades.Treino;
 import com.fittrack.entidades.User;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Home extends AppCompatActivity {
 
-    private LinearLayout headerHome;
-    private View divisoriaHome;
-    private LinearLayout dashboardContainer;
-    private ImageView navHistorico, navTreinos, navHome, navPerfil, navConfig;
-    private TextView txtBoasVindas;
+    private TextView txtTotalHoras, txtTotalTreinos, txtDiasTreinados, txtNomeHome;
+    private View barDom, barSeg, barTer, barQua, barQui, barSex, barSab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
 
-        headerHome = findViewById(R.id.headerHome);
-        divisoriaHome = findViewById(R.id.divisoriaHome);
-        dashboardContainer = findViewById(R.id.dashboardContainer);
-        navHistorico = findViewById(R.id.nav_historico);
-        navTreinos = findViewById(R.id.nav_treinos);
-        navHome = findViewById(R.id.nav_home);
-        navPerfil = findViewById(R.id.nav_perfil);
-        navConfig = findViewById(R.id.nav_config);
-        txtBoasVindas = findViewById(R.id.txtBoasVindas);
+        txtTotalHoras = findViewById(R.id.txtTotalHoras);
+        txtTotalTreinos = findViewById(R.id.txtTotalTreinos);
+        txtDiasTreinados = findViewById(R.id.txtDiasTreinados);
+        txtNomeHome = findViewById(R.id.txtBoasVindas);
 
-        carregarDadosEVerificarAcesso();
+        barDom = findViewById(R.id.barDom);
+        barSeg = findViewById(R.id.barSeg);
+        barTer = findViewById(R.id.barTer);
+        barQua = findViewById(R.id.barQua);
+        barQui = findViewById(R.id.barQui);
+        barSex = findViewById(R.id.barSex);
+        barSab = findViewById(R.id.barSab);
 
-        Button btnNovoTreino = findViewById(R.id.btnNovoTreino);
-        navHome.post(() -> atualizarIcones(navHome));
+        findViewById(R.id.btnNovoTreino).setOnClickListener(v -> startActivity(new Intent(Home.this, NovoTreino.class)));
 
-        btnNovoTreino.setOnClickListener(v -> {
-            startActivity(new Intent(Home.this, NovoTreino.class));
-        });
-
-        navHistorico.setOnClickListener(v -> {
-            atualizarIcones(navHistorico);
-            trocarFragmento(new Historico(), false);
-        });
-
-        navTreinos.setOnClickListener(v -> {
-            atualizarIcones(navTreinos);
-            trocarFragmento(new Treinos(), false);
-        });
-
-        navHome.setOnClickListener(v -> {
-            atualizarIcones(navHome);
-            headerHome.setVisibility(View.VISIBLE);
-            divisoriaHome.setVisibility(View.VISIBLE);
-            dashboardContainer.setVisibility(View.VISIBLE);
-
-            for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-                getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-            }
-        });
-
-        navPerfil.setOnClickListener(v -> {
-            atualizarIcones(navPerfil);
-            trocarFragmento(new Perfil(), false);
-        });
-
-        navConfig.setOnClickListener(v -> {
-            atualizarIcones(navConfig);
-            trocarFragmento(new Configuracoes(), false);
-        });
+        setupNav();
     }
 
-    private void carregarDadosEVerificarAcesso() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        atualizarDashboard();
+        carregarNomeUsuario();
+    }
+
+    private int dpToPx(int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+    }
+
+    private void carregarNomeUsuario() {
         new Thread(() -> {
-            AppDatabase db = AppDatabase.getInstance(this);
-            User user = db.userDao().getLastUser();
+            SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+            int userIdLogado = prefs.getInt("userId", -1);
 
-            if (user != null) {
-                if (user.nome != null) {
-                    String primeiroNome = user.nome.split(" ")[0];
-                    String textoCompleto = "Olá, " + primeiroNome;
+            if (userIdLogado == -1) return;
 
-                    SpannableString spannable = new SpannableString(textoCompleto);
-                    int corRoxa = ContextCompat.getColor(this, R.color.purple_primary);
+            try {
+                AppDatabase db = AppDatabase.getInstance(this);
+                User usuarioAtual = db.userDao().getUserById(userIdLogado);
 
-                    spannable.setSpan(
-                            new ForegroundColorSpan(corRoxa),
-                            5,
-                            textoCompleto.length(),
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    );
-
-                    runOnUiThread(() -> txtBoasVindas.setText(spannable));
+                if (usuarioAtual != null) {
+                    runOnUiThread(() -> {
+                        String primeiroNome = usuarioAtual.nome != null ? usuarioAtual.nome.split(" ")[0] : "User";
+                        if (txtNomeHome != null) {
+                            txtNomeHome.setText("Olá, " + primeiroNome);
+                        }
+                    });
                 }
-
-                SharedPreferences pref = getSharedPreferences("FitTrackPrefs", MODE_PRIVATE);
-                String chaveAcessoUser = "primeiro_acesso_" + user.id;
-                boolean primeiroAcesso = pref.getBoolean(chaveAcessoUser, true);
-
-                if (primeiroAcesso) {
-                    pref.edit().putBoolean(chaveAcessoUser, false).apply();
-                    runOnUiThread(this::mostrarPopUpOnboarding);
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }).start();
     }
 
-    private void atualizarIcones(ImageView selecionado) {
-        ImageView[] icones = {navHistorico, navTreinos, navHome, navPerfil, navConfig};
-        int corInativo = ContextCompat.getColor(this, R.color.text_hint);
-        int corAtivo = ContextCompat.getColor(this, R.color.purple_primary);
+    private void atualizarDashboard() {
+        new Thread(() -> {
+            SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+            int userIdLogado = prefs.getInt("userId", -1);
 
-        for (ImageView img : icones) {
-            img.setColorFilter(corInativo);
-        }
+            if (userIdLogado == -1) return;
 
-        selecionado.setColorFilter(corAtivo);
+            try {
+                AppDatabase db = AppDatabase.getInstance(this);
+                List<Treino> lista = db.treinoDao().getTreinosByUserId(userIdLogado);
+
+                int totalTreinos = lista.size();
+                int totalHoras = 0;
+                Set<String> diasUnicos = new HashSet<>();
+                Set<Integer> diasComTreino = new HashSet<>();
+
+                for (Treino t : lista) {
+                    try {
+                        if (t.duracao != null) {
+                            String apenasNumeros = t.duracao.replaceAll("[^0-9]", "");
+                            if (!apenasNumeros.isEmpty()) {
+                                totalHoras += Integer.parseInt(apenasNumeros);
+                            }
+                        }
+                    } catch (Exception ignored) {}
+
+                    try {
+                        if (t.data != null && t.data.contains("/")) {
+                            String[] partes = t.data.split("/");
+                            if (partes.length == 3) {
+                                Calendar cal = Calendar.getInstance();
+                                cal.set(Integer.parseInt(partes[2]), Integer.parseInt(partes[1]) - 1, Integer.parseInt(partes[0]));
+                                diasComTreino.add(cal.get(Calendar.DAY_OF_WEEK) - 1);
+                            }
+                        }
+                    } catch (Exception ignored) {}
+
+                    if (t.data != null && !t.data.trim().isEmpty()) {
+                        diasUnicos.add(t.data);
+                    }
+                }
+
+                final int fTreinos = totalTreinos;
+                final int fHoras = totalHoras;
+                final int fDias = diasUnicos.size();
+
+                runOnUiThread(() -> {
+                    txtTotalTreinos.setText(String.valueOf(fTreinos));
+                    txtTotalHoras.setText(fHoras + "h");
+                    txtDiasTreinados.setText(String.valueOf(fDias));
+
+                    View[] barras = {barDom, barSeg, barTer, barQua, barQui, barSex, barSab};
+                    for (int i = 0; i < 7; i++) {
+                        if (barras[i] != null) {
+                            barras[i].getLayoutParams().height = dpToPx(diasComTreino.contains(i) ? 100 : 10);
+                            barras[i].requestLayout();
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
-    private void trocarFragmento(Fragment fragmento, boolean mostrarHeader) {
-        if (mostrarHeader) {
-            headerHome.setVisibility(View.VISIBLE);
-            divisoriaHome.setVisibility(View.VISIBLE);
-            dashboardContainer.setVisibility(View.VISIBLE);
-        } else {
-            headerHome.setVisibility(View.GONE);
-            divisoriaHome.setVisibility(View.GONE);
-            dashboardContainer.setVisibility(View.GONE);
-        }
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragmento)
-                .commit();
-    }
-
-    private void mostrarPopUpOnboarding() {
-        Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.dialog_onboarding);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCancelable(false);
-
-        Button btnDeixaPraDepois = dialog.findViewById(R.id.btnDeixaPraDepois);
-        Button btnVamos = dialog.findViewById(R.id.btnVamos);
-
-        btnDeixaPraDepois.setOnClickListener(v -> dialog.dismiss());
-
-        btnVamos.setOnClickListener(v -> {
-            dialog.dismiss();
-            startActivity(new Intent(Home.this, Onboarding.class));
+    private void setupNav() {
+        findViewById(R.id.nav_historico).setOnClickListener(v -> trocarFragmento(new Historico()));
+        findViewById(R.id.nav_treinos).setOnClickListener(v -> trocarFragmento(new Treinos()));
+        findViewById(R.id.nav_perfil).setOnClickListener(v -> trocarFragmento(new Perfil()));
+        findViewById(R.id.nav_config).setOnClickListener(v -> trocarFragmento(new Configuracoes()));
+        findViewById(R.id.nav_home).setOnClickListener(v -> {
+            findViewById(R.id.headerHome).setVisibility(View.VISIBLE);
+            findViewById(R.id.divisoriaHome).setVisibility(View.VISIBLE);
+            findViewById(R.id.dashboardContainer).setVisibility(View.VISIBLE);
+            for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+                getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+            }
+            // Forçamos a atualização ao clicar no botão de Home!
+            atualizarDashboard();
+            carregarNomeUsuario();
         });
+    }
 
-        dialog.show();
-
-        if (dialog.getWindow() != null) {
-            int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90);
-            dialog.getWindow().setLayout(width, LinearLayout.LayoutParams.WRAP_CONTENT);
-        }
+    private void trocarFragmento(Fragment fragmento) {
+        findViewById(R.id.headerHome).setVisibility(View.GONE);
+        findViewById(R.id.divisoriaHome).setVisibility(View.GONE);
+        findViewById(R.id.dashboardContainer).setVisibility(View.GONE);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragmento).commit();
     }
 }

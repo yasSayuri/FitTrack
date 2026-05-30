@@ -2,7 +2,9 @@ package com.fittrack;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -11,10 +13,10 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
@@ -22,11 +24,13 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import com.fittrack.conexao.AppDatabase;
+import com.fittrack.entidades.Treino;
 import com.fittrack.entidades.User;
+import java.util.List;
 
 public class Perfil extends Fragment {
 
-    private TextView txtNome, txtUsername, txtBio;
+    private TextView txtNome, txtUsername, txtBio, txtCountTreinos, txtTotalDuracao, txtTotalCalorias;
     private ImageView imgProfile;
     private User usuarioAtual;
     private ActivityResultLauncher<Intent> photoPickerLauncher;
@@ -62,9 +66,14 @@ public class Perfil extends Fragment {
         txtBio = view.findViewById(R.id.txtBio);
         imgProfile = view.findViewById(R.id.imgProfile);
 
+        txtCountTreinos = view.findViewById(R.id.txtCountTreinos);
+        txtTotalDuracao = view.findViewById(R.id.txtTotalDuracao);
+        txtTotalCalorias = view.findViewById(R.id.txtTotalCalorias);
+
         carregarDadosUsuario();
 
         btnVoltar.setOnClickListener(v -> {
+            esconderTeclado();
             if (getActivity() != null) {
                 getActivity().findViewById(R.id.nav_home).performClick();
             }
@@ -76,9 +85,7 @@ public class Perfil extends Fragment {
         });
 
         btnEditar.setOnClickListener(v -> {
-            if (usuarioAtual != null) {
-                mostrarPopUpEdicao();
-            }
+            if (usuarioAtual != null) mostrarPopUpEdicao();
         });
 
         btnLogout.setOnClickListener(v -> {
@@ -92,29 +99,107 @@ public class Perfil extends Fragment {
         return view;
     }
 
-    private void carregarDadosUsuario() {
-        new Thread(() -> {
-            AppDatabase db = AppDatabase.getInstance(getContext());
-            usuarioAtual = db.userDao().getLastUser();
+    private void esconderTeclado() {
+        View view = getView();
+        if (view != null && getActivity() != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
-            if (usuarioAtual != null && getActivity() != null) {
-                getActivity().runOnUiThread(this::atualizarTextosDaTela);
+    @Override
+    public void onResume() {
+        super.onResume();
+        carregarEstatisticas();
+    }
+
+    private void carregarEstatisticas() {
+        // Guarda as referências da tela para a Thread não se perder se você navegar muito rápido
+        final Context context = getContext();
+        final Activity activity = getActivity();
+
+        if (context == null || activity == null) return;
+
+        new Thread(() -> {
+            SharedPreferences prefs = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+            int userIdLogado = prefs.getInt("userId", -1);
+
+            if (userIdLogado == -1) return;
+
+            try {
+                AppDatabase db = AppDatabase.getInstance(context);
+                List<Treino> lista = db.treinoDao().getTreinosByUserId(userIdLogado);
+
+                int totalTreinos = lista.size();
+                int totalHoras = 0;
+                int totalCalorias = 0;
+
+                for (Treino t : lista) {
+                    try {
+                        if (t.duracao != null) {
+                            String apenasNumeros = t.duracao.replaceAll("[^0-9]", "");
+                            if (!apenasNumeros.isEmpty()) totalHoras += Integer.parseInt(apenasNumeros);
+                        }
+                    } catch (Exception ignored) {}
+
+                    try {
+                        if (t.calorias != null) {
+                            String calNumeros = t.calorias.replaceAll("[^0-9]", "");
+                            if (!calNumeros.isEmpty()) totalCalorias += Integer.parseInt(calNumeros);
+                        }
+                    } catch (Exception ignored) {}
+                }
+
+                final int finalTotalTreinos = totalTreinos;
+                final int finalTotalHoras = totalHoras;
+                final int finalTotalCalorias = totalCalorias;
+
+                activity.runOnUiThread(() -> {
+                    txtCountTreinos.setText(String.valueOf(finalTotalTreinos));
+                    txtTotalDuracao.setText(finalTotalHoras + "h");
+                    txtTotalCalorias.setText(finalTotalCalorias + "k");
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    private void carregarDadosUsuario() {
+        final Context context = getContext();
+        final Activity activity = getActivity();
+
+        if (context == null || activity == null) return;
+
+        new Thread(() -> {
+            SharedPreferences prefs = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+            int userIdLogado = prefs.getInt("userId", -1);
+
+            if (userIdLogado == -1) return;
+
+            try {
+                AppDatabase db = AppDatabase.getInstance(context);
+                usuarioAtual = db.userDao().getUserById(userIdLogado);
+
+                if (usuarioAtual != null) {
+                    activity.runOnUiThread(this::atualizarTextosDaTela);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }).start();
     }
 
     private void atualizarTextosDaTela() {
         String primeiroNome = usuarioAtual.nome != null ? usuarioAtual.nome.split(" ")[0] : "Usuário";
-        String usernameFormatado = (usuarioAtual.usuario != null && !usuarioAtual.usuario.isEmpty()) ? "@" + usuarioAtual.usuario.replace("@", "") : "@usuario";
-        String idade = (usuarioAtual.idade != null && !usuarioAtual.idade.isEmpty()) ? usuarioAtual.idade : "--";
-        String peso = (usuarioAtual.peso != null && !usuarioAtual.peso.isEmpty()) ? usuarioAtual.peso : "--";
-        String altura = (usuarioAtual.altura != null && !usuarioAtual.altura.isEmpty()) ? usuarioAtual.altura : "--";
-
-        String bioText = "\"Idade: " + idade + " Peso: " + peso + " Altura: " + altura + "\"";
+        String username = (usuarioAtual.usuario != null && !usuarioAtual.usuario.isEmpty()) ? "@" + usuarioAtual.usuario.replace("@", "") : "@usuario";
+        String bio = "\"Idade: " + (usuarioAtual.idade != null ? usuarioAtual.idade : "--") +
+                " Peso: " + (usuarioAtual.peso != null ? usuarioAtual.peso : "--") +
+                " Altura: " + (usuarioAtual.altura != null ? usuarioAtual.altura : "--") + "\"";
 
         txtNome.setText(primeiroNome);
-        txtUsername.setText(usernameFormatado);
-        txtBio.setText(bioText);
+        txtUsername.setText(username);
+        txtBio.setText(bio);
 
         if (usuarioAtual.fotoPerfil != null && !usuarioAtual.fotoPerfil.isEmpty()) {
             imgProfile.setImageURI(Uri.parse(usuarioAtual.fotoPerfil));
@@ -122,17 +207,19 @@ public class Perfil extends Fragment {
     }
 
     private void salvarFotoNoBanco(String uriFoto) {
+        final Context context = getContext();
+        if (context == null) return;
+
         new Thread(() -> {
-            if (usuarioAtual != null && getContext() != null) {
+            if (usuarioAtual != null) {
                 usuarioAtual.fotoPerfil = uriFoto;
-                AppDatabase.getInstance(getContext()).userDao().update(usuarioAtual);
+                AppDatabase.getInstance(context).userDao().update(usuarioAtual);
             }
         }).start();
     }
 
     private void mostrarPopUpEdicao() {
         if (getContext() == null) return;
-
         Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_edit_profile);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -144,41 +231,33 @@ public class Perfil extends Fragment {
         EditText edtPeso = dialog.findViewById(R.id.edtEditPeso);
         EditText edtAltura = dialog.findViewById(R.id.edtEditAltura);
 
-        Button btnCancelar = dialog.findViewById(R.id.btnCancelarEdicao);
-        Button btnAtualizar = dialog.findViewById(R.id.btnAtualizarPerfil);
-
         edtNome.setText(usuarioAtual.nome);
         edtUsuario.setText(usuarioAtual.usuario);
         edtIdade.setText(usuarioAtual.idade);
         edtPeso.setText(usuarioAtual.peso);
         edtAltura.setText(usuarioAtual.altura);
 
-        btnCancelar.setOnClickListener(v -> dialog.dismiss());
-
-        btnAtualizar.setOnClickListener(v -> {
+        dialog.findViewById(R.id.btnCancelarEdicao).setOnClickListener(v -> dialog.dismiss());
+        dialog.findViewById(R.id.btnAtualizarPerfil).setOnClickListener(v -> {
             usuarioAtual.nome = edtNome.getText().toString().trim();
             usuarioAtual.usuario = edtUsuario.getText().toString().trim();
             usuarioAtual.idade = edtIdade.getText().toString().trim();
             usuarioAtual.peso = edtPeso.getText().toString().trim();
             usuarioAtual.altura = edtAltura.getText().toString().trim();
 
+            final Context context = getContext();
+            final Activity activity = getActivity();
+            if (context == null || activity == null) return;
+
             new Thread(() -> {
-                AppDatabase.getInstance(getContext()).userDao().update(usuarioAtual);
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
-                        atualizarTextosDaTela();
-                        Toast.makeText(getContext(), "Perfil atualizado!", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    });
-                }
+                AppDatabase.getInstance(context).userDao().update(usuarioAtual);
+                activity.runOnUiThread(() -> {
+                    atualizarTextosDaTela();
+                    Toast.makeText(context, "Perfil atualizado!", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                });
             }).start();
         });
-
         dialog.show();
-
-        if (dialog.getWindow() != null) {
-            int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90);
-            dialog.getWindow().setLayout(width, LinearLayout.LayoutParams.WRAP_CONTENT);
-        }
     }
 }

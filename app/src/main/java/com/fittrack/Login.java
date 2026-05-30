@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.fittrack.conexao.AppDatabase;
 import com.fittrack.entidades.User;
+import android.content.SharedPreferences;
 
 public class Login extends AppCompatActivity {
 
@@ -63,6 +64,11 @@ public class Login extends AppCompatActivity {
 
             runOnUiThread(() -> {
                 if (user != null) {
+                    SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("userId", user.id);
+                    editor.apply();
+
                     Intent intent = new Intent(Login.this, Home.class);
                     startActivity(intent);
                     finish();

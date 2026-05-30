@@ -11,21 +11,25 @@ import com.fittrack.dao.TreinoDao;
 import com.fittrack.dao.TreinoPlanoDao;
 import com.fittrack.dao.UserDao;
 
-@Database(entities = {User.class, Treino.class, TreinoPlano.class}, version = 6, exportSchema = false)
+@Database(entities = {User.class, Treino.class, TreinoPlano.class}, version = 15, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
-
-    private static AppDatabase INSTANCE;
 
     public abstract UserDao userDao();
     public abstract TreinoDao treinoDao();
     public abstract TreinoPlanoDao treinoPlanoDao();
 
+    private static volatile AppDatabase INSTANCE;
+
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
-            INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            AppDatabase.class, "fittrack_db")
-                    .fallbackToDestructiveMigration(false)
-                    .build();
+            synchronized (AppDatabase.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                                    AppDatabase.class, "fittrack_db")
+                            .fallbackToDestructiveMigration()
+                            .build();
+                }
+            }
         }
         return INSTANCE;
     }
