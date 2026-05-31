@@ -1,21 +1,19 @@
 package com.fittrack;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.fittrack.conexao.AppDatabase;
 import com.fittrack.entidades.User;
-import android.content.SharedPreferences;
 
 public class Login extends AppCompatActivity {
-
     private EditText edtEmail, edtPassword;
 
     @Override
@@ -25,23 +23,9 @@ public class Login extends AppCompatActivity {
 
         edtEmail = findViewById(R.id.edtEmailLogin);
         edtPassword = findViewById(R.id.edtPasswordLogin);
-        ImageView btnVoltar = findViewById(R.id.btnVoltarLogin);
-        Button btnDoLogin = findViewById(R.id.btnDoLogin);
-        TextView txtIrParaCadastro = findViewById(R.id.txtIrParaCadastro);
 
-        btnVoltar.setOnClickListener(v -> {
-            Intent intent = new Intent(Login.this, MainPage.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
-        });
-
-        btnDoLogin.setOnClickListener(v -> realizarLogin());
-
-        txtIrParaCadastro.setOnClickListener(v -> {
-            Intent intent = new Intent(Login.this, Cadastro.class);
-            startActivity(intent);
-        });
+        findViewById(R.id.btnVoltarLogin).setOnClickListener(v -> finish());
+        findViewById(R.id.btnDoLogin).setOnClickListener(v -> realizarLogin());
     }
 
     private void realizarLogin() {
@@ -49,12 +33,7 @@ public class Login extends AppCompatActivity {
         String senha = edtPassword.getText().toString().trim();
 
         if (email.isEmpty() || senha.isEmpty()) {
-            Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "Formato de e-mail inválido", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Preencha tudo", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -64,16 +43,13 @@ public class Login extends AppCompatActivity {
 
             runOnUiThread(() -> {
                 if (user != null) {
-                    SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("userId", user.id);
-                    editor.apply();
-
+                    getSharedPreferences("UserPrefs", MODE_PRIVATE).edit().putInt("userId", user.id).apply();
                     Intent intent = new Intent(Login.this, Home.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(Login.this, "E-mail ou senha incorretos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "E-mail ou senha incorretos", Toast.LENGTH_SHORT).show();
                 }
             });
         }).start();

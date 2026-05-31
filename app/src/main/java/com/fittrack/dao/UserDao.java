@@ -5,7 +5,6 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
-
 import com.fittrack.entidades.User;
 
 @Dao
@@ -16,8 +15,14 @@ public interface UserDao {
     @Query("SELECT * FROM usuarios WHERE email = :email AND senha = :senha LIMIT 1")
     User login(String email, String senha);
 
+    @Query("SELECT * FROM usuarios WHERE email = :email LIMIT 1")
+    User getUserByEmail(String email);
+
     @Query("SELECT * FROM usuarios WHERE id = :userId")
     User getUserById(int userId);
+
+    @Query("SELECT * FROM usuarios WHERE cpf = :cpf LIMIT 1")
+    User getUserByCpf(String cpf);
 
     @Update
     void update(User user);

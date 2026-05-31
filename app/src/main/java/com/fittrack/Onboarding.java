@@ -23,9 +23,14 @@ public class Onboarding extends AppCompatActivity {
         Button btnSalvarTreino = findViewById(R.id.btnSalvarTreino);
 
         btnSalvarTreino.setOnClickListener(v -> {
-            String idade = edtIdade.getText().toString();
-            String peso = edtPeso.getText().toString();
-            String altura = edtAltura.getText().toString();
+            String idade = edtIdade.getText().toString().trim();
+            String peso = edtPeso.getText().toString().trim();
+            String altura = edtAltura.getText().toString().trim();
+
+            if (idade.isEmpty() || peso.isEmpty() || altura.isEmpty()) {
+                Toast.makeText(this, "Por favor, preencha todos os campos!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
             int userIdLogado = prefs.getInt("userId", -1);
@@ -47,7 +52,7 @@ public class Onboarding extends AppCompatActivity {
                 }
 
                 runOnUiThread(() -> {
-                    Toast.makeText(Onboarding.this, "Treino cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Onboarding.this, "Dados salvos com sucesso!", Toast.LENGTH_SHORT).show();
                     finish();
                 });
             }).start();

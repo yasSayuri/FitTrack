@@ -1,6 +1,5 @@
 package com.fittrack;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,12 +8,12 @@ import android.text.TextWatcher;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.fittrack.conexao.AppDatabase;
 import com.fittrack.entidades.User;
+import com.fittrack.utils.CpfValidator;
 
 public class Cadastro extends AppCompatActivity {
 
@@ -32,150 +31,38 @@ public class Cadastro extends AppCompatActivity {
         edtBirthday = findViewById(R.id.edtBirthdaySignup);
         edtPassword = findViewById(R.id.edtPasswordSignup);
 
-        Button btnDoSignup = findViewById(R.id.btnDoSignup);
-        ImageView btnVoltar = findViewById(R.id.btnVoltarCadastro);
-        TextView txtIrParaLogin = findViewById(R.id.txtIrParaLogin);
-
         configurarMascaraData();
         configurarMascaraCpf();
 
-        btnDoSignup.setOnClickListener(v -> realizarCadastro());
+        findViewById(R.id.btnDoSignup).setOnClickListener(v -> realizarCadastro());
+        findViewById(R.id.btnVoltarCadastro).setOnClickListener(v -> finish());
 
-        btnVoltar.setOnClickListener(v -> {
-            Intent intent = new Intent(Cadastro.this, Home.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        });
-
+        TextView txtIrParaLogin = findViewById(R.id.txtIrParaLogin);
         if (txtIrParaLogin != null) {
-            txtIrParaLogin.setOnClickListener(v -> {
-                Intent intent = new Intent(Cadastro.this, Login.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            });
+            txtIrParaLogin.setOnClickListener(v -> finish());
         }
-    }
-
-    private void configurarMascaraData() {
-        edtBirthday.addTextChangedListener(new TextWatcher() {
-            private boolean isUpdating = false;
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (isUpdating) {
-                    isUpdating = false;
-                    return;
-                }
-
-                String str = s.toString().replaceAll("[^0-9]", "");
-                StringBuilder formatado = new StringBuilder();
-
-                if (str.length() >= 2) {
-                    formatado.append(str.substring(0, 2));
-                    if (str.length() > 2) formatado.append("/");
-                } else {
-                    formatado.append(str);
-                }
-
-                if (str.length() >= 4) {
-                    formatado.append(str.substring(2, 4));
-                    if (str.length() > 4) formatado.append("/");
-                } else if (str.length() > 2) {
-                    formatado.append(str.substring(2));
-                }
-
-                if (str.length() > 4) {
-                    if (str.length() > 8) {
-                        formatado.append(str.substring(4, 8));
-                    } else {
-                        formatado.append(str.substring(4));
-                    }
-                }
-
-                isUpdating = true;
-                edtBirthday.setText(formatado.toString());
-                edtBirthday.setSelection(formatado.length());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-    }
-
-    private void configurarMascaraCpf() {
-        edtCpf.addTextChangedListener(new TextWatcher() {
-            private boolean isUpdating = false;
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (isUpdating) {
-                    isUpdating = false;
-                    return;
-                }
-
-                String str = s.toString().replaceAll("[^0-9]", "");
-                StringBuilder formatado = new StringBuilder();
-
-                if (str.length() >= 3) {
-                    formatado.append(str.substring(0, 3));
-                    if (str.length() > 3) formatado.append(".");
-                } else {
-                    formatado.append(str);
-                }
-
-                if (str.length() >= 6) {
-                    formatado.append(str.substring(3, 6));
-                    if (str.length() > 6) formatado.append(".");
-                } else if (str.length() > 3) {
-                    formatado.append(str.substring(3));
-                }
-
-                if (str.length() >= 9) {
-                    formatado.append(str.substring(6, 9));
-                    if (str.length() > 9) formatado.append("-");
-                } else if (str.length() > 6) {
-                    formatado.append(str.substring(6));
-                }
-
-                if (str.length() > 9) {
-                    if (str.length() > 11) {
-                        formatado.append(str.substring(9, 11));
-                    } else {
-                        formatado.append(str.substring(9));
-                    }
-                }
-
-                isUpdating = true;
-                edtCpf.setText(formatado.toString());
-                edtCpf.setSelection(formatado.length());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
     }
 
     private void realizarCadastro() {
         String nome = edtName.getText().toString().trim();
-        String usuario = edtUsername.getText().toString().trim();
+        String user = edtUsername.getText().toString().trim();
         String email = edtEmail.getText().toString().trim();
         String cpf = edtCpf.getText().toString().trim();
         String data = edtBirthday.getText().toString().trim();
         String senha = edtPassword.getText().toString().trim();
 
-        if (nome.isEmpty() || usuario.isEmpty() || email.isEmpty() || cpf.isEmpty() || data.isEmpty() || senha.isEmpty()) {
+        if (nome.isEmpty() || user.isEmpty() || email.isEmpty() || cpf.isEmpty() || data.isEmpty() || senha.isEmpty()) {
             Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, "E-mail inválido!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!CpfValidator.isCpfValido(cpf)) {
+            Toast.makeText(this, "CPF inválido!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -186,26 +73,100 @@ public class Cadastro extends AppCompatActivity {
 
         new Thread(() -> {
             AppDatabase db = AppDatabase.getInstance(this);
-            User novoUsuario = new User(nome, usuario, email, cpf, data, senha);
 
+            // Validação de e-mail e CPF únicos
+            if (db.userDao().getUserByEmail(email) != null) {
+                runOnUiThread(() -> Toast.makeText(this, "Este e-mail já está cadastrado!", Toast.LENGTH_SHORT).show());
+                return;
+            }
+
+            if (db.userDao().getUserByCpf(cpf) != null) {
+                runOnUiThread(() -> Toast.makeText(this, "Este CPF já possui cadastro!", Toast.LENGTH_SHORT).show());
+                return;
+            }
+
+            User novoUsuario = new User(nome, user, email, cpf, data, senha);
             db.userDao().register(novoUsuario);
 
-            User userRegistrado = db.userDao().login(email, senha);
-
-            if (userRegistrado != null) {
-                SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putInt("userId", userRegistrado.id);
-                editor.apply();
+            User registrado = db.userDao().login(email, senha);
+            if (registrado != null) {
+                getSharedPreferences("UserPrefs", MODE_PRIVATE).edit().putInt("userId", registrado.id).apply();
             }
 
             runOnUiThread(() -> {
                 Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(Cadastro.this, Onboarding.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                startActivity(new Intent(Cadastro.this, Onboarding.class));
                 finish();
             });
         }).start();
+    }
+    private void configurarMascaraData() {
+        edtBirthday.addTextChangedListener(new TextWatcher() {
+            private boolean isUpdating = false;
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isUpdating) { isUpdating = false; return; }
+
+                String str = s.toString().replaceAll("[^0-9]", "");
+                StringBuilder formatado = new StringBuilder();
+
+                int len = str.length();
+                if (len > 0) {
+                    if (len <= 2) {
+                        formatado.append(str);
+                    } else if (len <= 4) {
+                        formatado.append(str.substring(0, 2)).append("/").append(str.substring(2));
+                    } else {
+                        // Limita a 8 dígitos para evitar erro
+                        formatado.append(str.substring(0, 2)).append("/")
+                                .append(str.substring(2, 4)).append("/")
+                                .append(str.substring(4, Math.min(len, 8)));
+                    }
+                }
+
+                isUpdating = true;
+                edtBirthday.setText(formatado.toString());
+                edtBirthday.setSelection(formatado.length());
+            }
+        });
+    }
+
+    private void configurarMascaraCpf() {
+        edtCpf.addTextChangedListener(new TextWatcher() {
+            private boolean isUpdating = false;
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isUpdating) { isUpdating = false; return; }
+
+                String str = s.toString().replaceAll("[^0-9]", "");
+                StringBuilder formatado = new StringBuilder();
+
+                int len = str.length();
+                if (len > 0) {
+                    if (len <= 3) {
+                        formatado.append(str);
+                    } else if (len <= 6) {
+                        formatado.append(str.substring(0, 3)).append(".").append(str.substring(3));
+                    } else if (len <= 9) {
+                        formatado.append(str.substring(0, 3)).append(".")
+                                .append(str.substring(3, 6)).append(".")
+                                .append(str.substring(6));
+                    } else {
+                        formatado.append(str.substring(0, 3)).append(".")
+                                .append(str.substring(3, 6)).append(".")
+                                .append(str.substring(6, 9)).append("-")
+                                .append(str.substring(9, Math.min(len, 11)));
+                    }
+                }
+
+                isUpdating = true;
+                edtCpf.setText(formatado.toString());
+                edtCpf.setSelection(formatado.length());
+            }
+        });
     }
 }
