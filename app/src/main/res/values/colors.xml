@@ -17,4 +17,10 @@
 
     <color name="purple_pressed">#5E35B1</color>
     <color name="bg_gray_pressed">#303030</color>
+
+    <color name="electric_violet">#834DFB</color>
+    <color name="turbo">#F0E100</color>
+    <color name="haiti">#18002B</color>
+    <color name="haiti_dark">#120020</color>
+    <color name="bg_gray_light">#2A2A2A</color>
 </resources>

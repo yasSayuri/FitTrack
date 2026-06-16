@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true">
+        <layer-list>
+
+            <!-- brilho externo roxo -->
+            <item>
+                <shape>
+                    <corners android:radius="18dp" />
+                    <solid android:color="#22834DFB" />
+                    <stroke
+                        android:width="3dp"
+                        android:color="#AA834DFB" />
+                </shape>
+            </item>
+
+            <!-- botão interno -->
+            <item
+                android:left="3dp"
+                android:right="3dp"
+                android:top="3dp"
+                android:bottom="3dp">
+                <shape>
+                    <corners android:radius="14dp" />
+                    <solid android:color="#4418002B" />
+                    <stroke
+                        android:width="2dp"
+                        android:color="@color/turbo" />
+                </shape>
+            </item>
+
+        </layer-list>
+    </item>
+
+    <item>
+        <layer-list>
+
+            <!-- brilho externo roxo suave -->
+            <item>
+                <shape>
+                    <corners android:radius="18dp" />
+                    <solid android:color="#11834DFB" />
+                    <stroke
+                        android:width="3dp"
+                        android:color="#77834DFB" />
+                </shape>
+            </item>
+
+            <!-- brilho amarelo bem leve -->
+            <item
+                android:left="2dp"
+                android:right="2dp"
+                android:top="2dp"
+                android:bottom="2dp">
+                <shape>
+                    <corners android:radius="16dp" />
+                    <solid android:color="#1118002B" />
+                    <stroke
+                        android:width="1dp"
+                        android:color="#66F0E100" />
+                </shape>
+            </item>
+
+            <!-- botão principal -->
+            <item
+                android:left="4dp"
+                android:right="4dp"
+                android:top="4dp"
+                android:bottom="4dp">
+                <shape>
+                    <corners android:radius="14dp" />
+                    <solid android:color="#3318002B" />
+                    <stroke
+                        android:width="1dp"
+                        android:color="@color/electric_violet" />
+                </shape>
+            </item>
+
+        </layer-list>
+    </item>
+
+</selector>
