@@ -4,134 +4,183 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@drawable/bg_degrade_roxo">
+    android:background="@drawable/bg_auth_screen">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="32dp">
+        android:minHeight="700dp">
 
-        <ImageView
-            android:id="@+id/btnVoltarCadastro"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/ic_arrow_back"
-            app:tint="@color/text_white"
-            android:layout_marginBottom="16dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cadastro"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_white"
-            android:layout_marginBottom="32dp" />
-
-        <EditText
-            android:id="@+id/edtNameSignup"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:hint="Nome completo"
-            android:textColorHint="@color/text_hint"
-            android:textColor="@color/text_white"
-            android:backgroundTint="@color/purple_primary"
-            android:layout_marginBottom="16dp"
-            android:inputType="textPersonName"/>
-
-        <EditText
-            android:id="@+id/edtUsernameSignup"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:hint="Usuário"
-            android:textColorHint="@color/text_hint"
-            android:textColor="@color/text_white"
-            android:backgroundTint="@color/purple_primary"
-            android:layout_marginBottom="16dp"
-            android:inputType="text"/>
-
-        <EditText
-            android:id="@+id/edtEmailSignup"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:hint="E-mail"
-            android:textColorHint="@color/text_hint"
-            android:textColor="@color/text_white"
-            android:backgroundTint="@color/purple_primary"
-            android:layout_marginBottom="16dp"
-            android:inputType="textEmailAddress"/>
-
-        <EditText
-            android:id="@+id/edtCpfSignup"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:hint="CPF"
-            android:textColorHint="@color/text_hint"
-            android:textColor="@color/text_white"
-            android:backgroundTint="@color/purple_primary"
-            android:layout_marginBottom="16dp"
-            android:inputType="number"/>
-
-        <EditText
-            android:id="@+id/edtBirthdaySignup"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:hint="Data de nascimento"
-            android:textColorHint="@color/text_hint"
-            android:textColor="@color/text_white"
-            android:backgroundTint="@color/purple_primary"
-            android:layout_marginBottom="16dp"
-            android:inputType="number"/>
-
-        <EditText
-            android:id="@+id/edtPasswordSignup"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:hint="Senha"
-            android:textColorHint="@color/text_hint"
-            android:textColor="@color/text_white"
-            android:backgroundTint="@color/purple_primary"
-            android:layout_marginBottom="32dp"
-            android:inputType="textPassword"/>
-
-        <Button
-            android:id="@+id/btnDoSignup"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Cadastrar"
-            android:backgroundTint="@color/selector_btn_roxo"
-            android:textColor="@color/text_white" />
+        <View
+            android:layout_width="260dp"
+            android:layout_height="260dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="#332A0050" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp">
+            android:orientation="vertical"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:paddingTop="42dp"
+            android:paddingBottom="32dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginBottom="28dp">
+
+                <ImageView
+                    android:id="@+id/btnVoltarCadastro"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="start|center_vertical"
+                    android:src="@drawable/ic_arrow_back"
+                    app:tint="@color/electric_violet"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <ImageView
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_training"
+                    app:tint="@color/electric_violet" />
+
+            </FrameLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Já tem uma conta? "
+                android:text="Cadastro"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_white"
+                android:layout_marginBottom="20dp" />
+
+            <EditText
+                android:id="@+id/edtNameSignup"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:hint="Nome completo"
+                android:textColorHint="@color/text_hint"
+                android:textColor="@color/text_white"
+                android:backgroundTint="@color/electric_violet"
+                android:layout_marginBottom="6dp"
+                android:inputType="textPersonName"
+                android:textSize="14sp"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp" />
+
+            <EditText
+                android:id="@+id/edtUsernameSignup"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:hint="Usuário"
+                android:textColorHint="@color/text_hint"
+                android:textColor="@color/text_white"
+                android:backgroundTint="@color/electric_violet"
+                android:layout_marginBottom="6dp"
+                android:inputType="text"
+                android:textSize="14sp"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp" />
+
+            <EditText
+                android:id="@+id/edtEmailSignup"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:hint="E-mail"
+                android:textColorHint="@color/text_hint"
+                android:textColor="@color/text_white"
+                android:backgroundTint="@color/electric_violet"
+                android:layout_marginBottom="6dp"
+                android:inputType="textEmailAddress"
+                android:textSize="14sp"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp" />
+
+            <EditText
+                android:id="@+id/edtCpfSignup"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:hint="CPF"
+                android:textColorHint="@color/text_hint"
+                android:textColor="@color/text_white"
+                android:backgroundTint="@color/electric_violet"
+                android:layout_marginBottom="6dp"
+                android:inputType="number"
+                android:textSize="14sp"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp" />
+
+            <EditText
+                android:id="@+id/edtBirthdaySignup"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:hint="Data de nascimento"
+                android:textColorHint="@color/text_hint"
+                android:textColor="@color/text_white"
+                android:backgroundTint="@color/electric_violet"
+                android:layout_marginBottom="6dp"
+                android:inputType="number"
+                android:textSize="14sp"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp" />
+
+            <EditText
+                android:id="@+id/edtPasswordSignup"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:hint="Senha"
+                android:textColorHint="@color/text_hint"
+                android:textColor="@color/text_white"
+                android:backgroundTint="@color/electric_violet"
+                android:layout_marginBottom="26dp"
+                android:inputType="textPassword"
+                android:textSize="14sp"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnDoSignup"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="CADASTRAR"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:textColor="@color/text_white"
+                android:background="@drawable/bg_auth_button"
+                android:backgroundTint="@null"
+                app:backgroundTint="@null"
+                android:stateListAnimator="@null" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Já tem uma conta?"
                 android:textColor="@color/text_hint"
-                android:textSize="16sp"/>
+                android:textSize="14sp"
+                android:gravity="center"
+                android:layout_marginTop="18dp" />
 
             <TextView
                 android:id="@+id/txtIrParaLogin"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Faça o Login"
-                android:textColor="@color/purple_primary"
+                android:textColor="@color/electric_violet"
                 android:textStyle="bold"
-                android:textSize="16sp"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:layout_marginTop="4dp"
                 android:clickable="true"
-                android:focusable="true"/>
+                android:focusable="true" />
+
         </LinearLayout>
 
-    </LinearLayout>
+    </FrameLayout>
+
 </ScrollView>
