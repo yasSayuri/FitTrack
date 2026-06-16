@@ -6,14 +6,21 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.fittrack.conexao.AppDatabase;
 import com.fittrack.entidades.User;
 import com.fittrack.utils.CpfValidator;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class Cadastro extends AppCompatActivity {
 
@@ -71,10 +78,16 @@ public class Cadastro extends AppCompatActivity {
             return;
         }
 
+        Integer idadeCalculada = calcularIdade(data);
+
+        if (idadeCalculada == null) {
+            Toast.makeText(this, "Data de nascimento inválida!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         new Thread(() -> {
             AppDatabase db = AppDatabase.getInstance(this);
 
-            // Validação de e-mail e CPF únicos
             if (db.userDao().getUserByEmail(email) != null) {
                 runOnUiThread(() -> Toast.makeText(this, "Este e-mail já está cadastrado!", Toast.LENGTH_SHORT).show());
                 return;
@@ -86,11 +99,16 @@ public class Cadastro extends AppCompatActivity {
             }
 
             User novoUsuario = new User(nome, user, email, cpf, data, senha);
+            novoUsuario.idade = String.valueOf(idadeCalculada);
+
             db.userDao().register(novoUsuario);
 
             User registrado = db.userDao().login(email, senha);
+
             if (registrado != null) {
-                getSharedPreferences("UserPrefs", MODE_PRIVATE).edit().putInt("userId", registrado.id).apply();
+                SharedPreferences.Editor editor = getSharedPreferences("UserPrefs", MODE_PRIVATE).edit();
+                editor.putInt("userId", registrado.id);
+                editor.apply();
             }
 
             runOnUiThread(() -> {
@@ -100,28 +118,70 @@ public class Cadastro extends AppCompatActivity {
             });
         }).start();
     }
+
+    private Integer calcularIdade(String dataNascimento) {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        formato.setLenient(false);
+
+        try {
+            Date nascimento = formato.parse(dataNascimento);
+
+            Calendar dataNasc = Calendar.getInstance();
+            dataNasc.setTime(nascimento);
+
+            Calendar hoje = Calendar.getInstance();
+
+            int idade = hoje.get(Calendar.YEAR) - dataNasc.get(Calendar.YEAR);
+
+            if (hoje.get(Calendar.DAY_OF_YEAR) < dataNasc.get(Calendar.DAY_OF_YEAR)) {
+                idade--;
+            }
+
+            if (idade < 0 || idade > 120) {
+                return null;
+            }
+
+            return idade;
+
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
     private void configurarMascaraData() {
         edtBirthday.addTextChangedListener(new TextWatcher() {
             private boolean isUpdating = false;
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void afterTextChanged(Editable s) {}
 
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (isUpdating) { isUpdating = false; return; }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isUpdating) {
+                    isUpdating = false;
+                    return;
+                }
 
                 String str = s.toString().replaceAll("[^0-9]", "");
                 StringBuilder formatado = new StringBuilder();
 
                 int len = str.length();
+
                 if (len > 0) {
                     if (len <= 2) {
                         formatado.append(str);
                     } else if (len <= 4) {
-                        formatado.append(str.substring(0, 2)).append("/").append(str.substring(2));
+                        formatado.append(str.substring(0, 2))
+                                .append("/")
+                                .append(str.substring(2));
                     } else {
-                        // Limita a 8 dígitos para evitar erro
-                        formatado.append(str.substring(0, 2)).append("/")
-                                .append(str.substring(2, 4)).append("/")
+                        formatado.append(str.substring(0, 2))
+                                .append("/")
+                                .append(str.substring(2, 4))
+                                .append("/")
                                 .append(str.substring(4, Math.min(len, 8)));
                     }
                 }
@@ -136,29 +196,45 @@ public class Cadastro extends AppCompatActivity {
     private void configurarMascaraCpf() {
         edtCpf.addTextChangedListener(new TextWatcher() {
             private boolean isUpdating = false;
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void afterTextChanged(Editable s) {}
 
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (isUpdating) { isUpdating = false; return; }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isUpdating) {
+                    isUpdating = false;
+                    return;
+                }
 
                 String str = s.toString().replaceAll("[^0-9]", "");
                 StringBuilder formatado = new StringBuilder();
 
                 int len = str.length();
+
                 if (len > 0) {
                     if (len <= 3) {
                         formatado.append(str);
                     } else if (len <= 6) {
-                        formatado.append(str.substring(0, 3)).append(".").append(str.substring(3));
+                        formatado.append(str.substring(0, 3))
+                                .append(".")
+                                .append(str.substring(3));
                     } else if (len <= 9) {
-                        formatado.append(str.substring(0, 3)).append(".")
-                                .append(str.substring(3, 6)).append(".")
+                        formatado.append(str.substring(0, 3))
+                                .append(".")
+                                .append(str.substring(3, 6))
+                                .append(".")
                                 .append(str.substring(6));
                     } else {
-                        formatado.append(str.substring(0, 3)).append(".")
-                                .append(str.substring(3, 6)).append(".")
-                                .append(str.substring(6, 9)).append("-")
+                        formatado.append(str.substring(0, 3))
+                                .append(".")
+                                .append(str.substring(3, 6))
+                                .append(".")
+                                .append(str.substring(6, 9))
+                                .append("-")
                                 .append(str.substring(9, Math.min(len, 11)));
                     }
                 }

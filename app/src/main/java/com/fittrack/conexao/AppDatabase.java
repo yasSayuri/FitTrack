@@ -13,7 +13,7 @@ import com.fittrack.entidades.Treino;
 import com.fittrack.entidades.TreinoPlano;
 import com.fittrack.entidades.User;
 
-@Database(entities = {User.class, Treino.class, TreinoPlano.class, ExercicioTreino.class}, version = 26, exportSchema = false)
+@Database(entities = {User.class, Treino.class, TreinoPlano.class, ExercicioTreino.class}, version = 28, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();
