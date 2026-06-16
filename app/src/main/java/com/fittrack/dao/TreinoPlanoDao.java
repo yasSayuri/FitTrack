@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface TreinoPlanoDao {
     @Insert
-    void insert(TreinoPlano plano);
+    long insert(TreinoPlano plano);
 
     @Update
     void update(TreinoPlano plano);
@@ -22,4 +22,7 @@ public interface TreinoPlanoDao {
 
     @Query("SELECT * FROM treinos_planos WHERE userId = :userId")
     List<TreinoPlano> getTreinosPlanosByUserId(int userId);
+
+    @Query("SELECT * FROM treinos_planos WHERE id = :id")
+    TreinoPlano getTreinoPlanoById(int id);
 }

@@ -8,7 +8,8 @@
     app:cardElevation="0dp"
     android:layout_marginBottom="12dp"
     android:foreground="?attr/selectableItemBackground"
-    android:clickable="true">
+    android:clickable="true"
+    android:focusable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +23,7 @@
             android:layout_height="32dp"
             android:src="@drawable/ic_training"
             app:tint="@color/purple_primary"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginEnd="16dp" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -34,17 +35,11 @@
                 android:id="@+id/txtTipoTreinoPlano"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Treino"
                 android:textColor="@color/text_white"
                 android:textStyle="bold"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/txtDetalhesTreinoPlano"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_hint"
-                android:textSize="12sp"
-                android:layout_marginTop="4dp"/>
         </LinearLayout>
 
         <ImageView
@@ -52,6 +47,8 @@
             android:layout_height="24dp"
             android:src="@drawable/ic_arrow_back"
             android:rotation="180"
-            app:tint="@color/text_hint"/>
+            app:tint="@color/text_hint" />
+
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

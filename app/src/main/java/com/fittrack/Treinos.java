@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.fragment.app.Fragment;
+
 import com.fittrack.conexao.AppDatabase;
 import com.fittrack.entidades.TreinoPlano;
+
 import java.util.List;
 
 public class Treinos extends Fragment {
@@ -23,7 +25,9 @@ public class Treinos extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.treinos, container, false);
+
         localInflater = inflater;
 
         Button btnCriarTreino = view.findViewById(R.id.btnCriarTreino);
@@ -39,6 +43,7 @@ public class Treinos extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
         if (localInflater != null && containerCards != null) {
             carregarTreinos(localInflater, containerCards);
         }
@@ -64,18 +69,12 @@ public class Treinos extends Fragment {
                         View card = inflater.inflate(R.layout.item_treino_plano, container, false);
 
                         TextView txtTipo = card.findViewById(R.id.txtTipoTreinoPlano);
-                        TextView txtDetalhes = card.findViewById(R.id.txtDetalhesTreinoPlano);
 
-                        txtTipo.setText(t.tipo);
-                        txtDetalhes.setText(t.exercicios + " • " + t.series + " Séries de " + t.repeticoes);
+                        txtTipo.setText(t.tipo != null ? t.tipo : "Treino");
 
                         card.setOnClickListener(c -> {
                             Intent intent = new Intent(requireContext(), DetalheTreinoPlano.class);
                             intent.putExtra("id", t.id);
-                            intent.putExtra("tipo", t.tipo);
-                            intent.putExtra("exercicios", t.exercicios);
-                            intent.putExtra("series", t.series);
-                            intent.putExtra("repeticoes", t.repeticoes);
                             startActivity(intent);
                         });
 

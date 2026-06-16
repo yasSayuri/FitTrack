@@ -19,7 +19,7 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginBottom="24dp"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center" />
 
         <EditText
             android:id="@+id/edtTipoRotina"
@@ -29,49 +29,26 @@
             android:textColorHint="@color/text_hint"
             android:textColor="@color/text_white"
             android:backgroundTint="@color/purple_dark"
-            android:layout_marginBottom="8dp"/>
-
-        <EditText
-            android:id="@+id/edtExerciciosRotina"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:gravity="top|start"
-            android:hint="Exercícios (Ex: Supino, Agachamento...)"
-            android:textColorHint="@color/text_hint"
-            android:textColor="@color/text_white"
-            android:backgroundTint="@color/purple_dark"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp" />
 
         <LinearLayout
+            android:id="@+id/containerExercicios"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="24dp">
+            android:orientation="vertical" />
 
-            <EditText
-                android:id="@+id/edtSeriesRotina"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:inputType="number"
-                android:hint="Séries"
-                android:layout_marginEnd="4dp"
-                android:textColorHint="@color/text_hint"
-                android:textColor="@color/text_white"
-                android:backgroundTint="@color/purple_dark"/>
-
-            <EditText
-                android:id="@+id/edtRepeticoesRotina"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:inputType="number"
-                android:hint="Repetições"
-                android:layout_marginStart="4dp"
-                android:textColorHint="@color/text_hint"
-                android:textColor="@color/text_white"
-                android:backgroundTint="@color/purple_dark"/>
-        </LinearLayout>
+        <Button
+            android:id="@+id/btnAdicionarExercicio"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Adicionar exercício"
+            android:drawableStart="@drawable/ic_add"
+            android:drawableTint="@color/text_white"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:backgroundTint="@color/bg_gray"
+            android:textColor="@color/text_white"
+            android:layout_marginBottom="24dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,7 +63,7 @@
                 android:layout_marginEnd="8dp"
                 android:text="Cancelar"
                 android:backgroundTint="@color/bg_gray"
-                android:textColor="@color/text_white"/>
+                android:textColor="@color/text_white" />
 
             <Button
                 android:id="@+id/btnSalvarCriarTreino"
@@ -96,7 +73,7 @@
                 android:layout_marginStart="8dp"
                 android:text="Salvar Treino"
                 android:backgroundTint="@color/purple_primary"
-                android:textColor="@color/text_white"/>
+                android:textColor="@color/text_white" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -33,22 +33,34 @@
                     app:tint="@color/purple_primary"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:clickable="true"
-                    android:layout_marginEnd="12dp"/>
+                    android:focusable="true"
+                    android:layout_marginEnd="12dp" />
 
                 <TextView
                     android:id="@+id/txtTipoDetalhePlano"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Treino"
                     android:textColor="@color/text_white"
                     android:textSize="24sp"
                     android:textStyle="bold" />
+
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/purple_primary"
-                android:layout_marginBottom="24dp"/>
+                android:layout_marginBottom="24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Exercícios da Rotina"
+                android:textColor="@color/text_hint"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -59,50 +71,16 @@
                 android:layout_marginBottom="24dp">
 
                 <LinearLayout
+                    android:id="@+id/containerExerciciosDetalhePlano"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
+                    android:orientation="vertical"
+                    android:padding="16dp" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Séries" android:textColor="@color/text_hint" android:textSize="14sp"/>
-                        <TextView android:id="@+id/txtSeriesDetalhePlano" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/purple_primary" android:textSize="24sp" android:textStyle="bold"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Repetições" android:textColor="@color/text_hint" android:textSize="14sp"/>
-                        <TextView android:id="@+id/txtRepeticoesDetalhePlano" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/purple_primary" android:textSize="24sp" android:textStyle="bold"/>
-                    </LinearLayout>
-                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Exercícios da Rotina"
-                android:textColor="@color/text_hint"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
-
-            <TextView
-                android:id="@+id/txtExerciciosDetalhePlano"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_white"
-                android:textSize="16sp"
-                android:lineSpacingMultiplier="1.2"/>
         </LinearLayout>
+
     </ScrollView>
 
     <LinearLayout
@@ -125,7 +103,7 @@
             android:textColor="@android:color/white"
             android:backgroundTint="@color/purple_primary"
             android:layout_marginEnd="8dp"
-            app:cornerRadius="12dp"/>
+            app:cornerRadius="12dp" />
 
         <Button
             android:id="@+id/btnDeletarPlano"
@@ -138,6 +116,8 @@
             android:textColor="@android:color/white"
             android:backgroundTint="#B00020"
             android:layout_marginStart="8dp"
-            app:cornerRadius="12dp"/>
+            app:cornerRadius="12dp" />
+
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

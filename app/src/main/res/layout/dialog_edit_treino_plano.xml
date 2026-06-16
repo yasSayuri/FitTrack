@@ -14,59 +14,50 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginBottom="16dp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
     <EditText
         android:id="@+id/edtEditTipoPlano"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:hint="Tipo"
+        android:hint="Tipo do treino"
         android:textColorHint="@color/text_hint"
         android:textColor="@color/text_white"
         android:backgroundTint="@color/purple_dark"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="16dp" />
 
-    <EditText
-        android:id="@+id/edtEditExerciciosPlano"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:gravity="top|start"
-        android:hint="Exercícios"
-        android:textColorHint="@color/text_hint"
-        android:textColor="@color/text_white"
-        android:backgroundTint="@color/purple_dark"
-        android:layout_marginBottom="8dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="24dp">
+        android:text="Exercícios"
+        android:textColor="@color/text_hint"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
 
-        <EditText
-            android:id="@+id/edtEditSeriesPlano"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:inputType="number"
-            android:hint="Séries"
-            android:layout_marginEnd="4dp"
-            android:textColorHint="@color/text_hint"
-            android:textColor="@color/text_white"
-            android:backgroundTint="@color/purple_dark"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:fillViewport="false">
 
-        <EditText
-            android:id="@+id/edtEditRepeticoesPlano"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:inputType="number"
-            android:hint="Repetições"
-            android:layout_marginStart="4dp"
-            android:textColorHint="@color/text_hint"
-            android:textColor="@color/text_white"
-            android:backgroundTint="@color/purple_dark"/>
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/containerEditExerciciosPlano"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnAdicionarEditExercicio"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="+ Adicionar exercício"
+        android:textAllCaps="false"
+        android:textColor="@color/purple_primary"
+        android:backgroundTint="@color/bg_dark"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="20dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -80,9 +71,10 @@
             android:layout_height="60dp"
             android:layout_weight="1"
             android:text="Cancelar"
+            android:textAllCaps="false"
             android:backgroundTint="@color/bg_dark"
             android:textColor="@color/text_hint"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/btnSalvarEditPlano"
@@ -90,7 +82,10 @@
             android:layout_height="60dp"
             android:layout_weight="1"
             android:text="Salvar"
+            android:textAllCaps="false"
             android:backgroundTint="@color/purple_primary"
-            android:textColor="@color/text_white"/>
+            android:textColor="@color/text_white" />
+
     </LinearLayout>
+
 </LinearLayout>
